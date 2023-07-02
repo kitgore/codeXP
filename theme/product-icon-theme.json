@@ -1,0 +1,77 @@
+{
+	"fonts": [
+		{
+			"id": "progressbar",
+			"src": [
+				{
+					"path": "./icomoon.woff",
+					"format": "woff"
+				}
+			],
+			"weight": "normal",
+			"style": "normal",
+		}
+	],
+	"iconDefinitions": {
+        "progress-beginning": {
+            "fontCharacter": "\\61"
+	},
+            "progress-1": {
+            "fontCharacter": "\\62"
+	},
+            "progress-2": {
+            "fontCharacter": "\\63"
+	},
+            "progress-3": {
+            "fontCharacter": "\\64"
+	},
+            "progress-4": {
+            "fontCharacter": "\\65"
+	},
+            "progress-5": {
+            "fontCharacter": "\\66"
+	},
+            "progress-6": {
+            "fontCharacter": "\\67"
+	},
+            "progress-7": {
+            "fontCharacter": "\\68"
+	},
+            "progress-8": {
+            "fontCharacter": "\\69"
+	},
+            "progress-9": {
+            "fontCharacter": "\\6a"
+	},
+            "progress-10": {
+            "fontCharacter": "\\6b"
+	},
+            "progress-11": {
+            "fontCharacter": "\\6c"
+	},
+            "progress-12": {
+            "fontCharacter": "\\6d"
+	},
+            "progress-13": {
+            "fontCharacter": "\\6e"
+	},
+            "progress-14": {
+            "fontCharacter": "\\6f"
+	},
+            "progress-15": {
+            "fontCharacter": "\\70"
+	},
+            "progress-end-1": {
+            "fontCharacter": "\\71"
+	},
+            "progress-end-2": {
+            "fontCharacter": "\\72"
+	},
+            "progress-end-3": {
+            "fontCharacter": "\\73"
+	},
+            "progress-end-4": {
+            "fontCharacter": "\\74"
+	},
+}
+}

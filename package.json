@@ -16,8 +16,162 @@
       {
         "command": "codexp.showInfo",
         "title": "Show Info"
+      },
+      {
+        "command": "codexp.addXP",
+        "title": "Add XP"
       }
-    ]
+    ],
+    "productIconThemes": [
+      {
+        "id": "progressbar",
+        "label": "Progressbar icons",
+        "path": "./theme/product-icon-theme.json"
+      }
+    ],
+    "icons": {
+      "progress-beginning": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\61"
+        }
+      },
+      "progress-1": {
+          "description": "progress icon 1",
+          "default": {
+              "fontPath": "./theme/icomoon.woff",
+              "fontCharacter": "\\62"
+          }
+        },
+      "progress-2": {
+          "description": "progress icon 1",
+          "default": {
+              "fontPath": "./theme/icomoon.woff",
+              "fontCharacter": "\\63"
+          }
+    },
+      "progress-3": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\64"
+        }
+      },
+      "progress-4": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\65"
+        }
+    },
+    "progress-5": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\66"
+      }
+    },
+  "progress-6": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\67"
+      }
+},
+      "progress-7": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\68"
+        }
+      },
+      "progress-8": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\69"
+        }
+    },
+    "progress-9": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6a"
+      }
+  },
+  "progress-10": {
+    "description": "progress icon 1",
+    "default": {
+        "fontPath": "./theme/icomoon.woff",
+        "fontCharacter": "\\6b"
+    }
+},
+    "progress-11": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6c"
+      }
+    },
+    "progress-12": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6d"
+      }
+  },
+      "progress-13": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\6e"
+        }
+      },
+      "progress-14": {
+        "description": "progress icon 1",
+        "default": {
+            "fontPath": "./theme/icomoon.woff",
+            "fontCharacter": "\\6f"
+        }
+    },
+        "progress-15": {
+          "description": "progress icon 1",
+          "default": {
+              "fontPath": "./theme/icomoon.woff",
+              "fontCharacter": "\\70"
+          }
+        },
+        
+    "progress-end-1": {
+    "description": "progress icon 1",
+    "default": {
+        "fontPath": "./theme/icomoon.woff",
+        "fontCharacter": "\\71"
+    }
+    },
+    "progress-end-2": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\72"
+      }
+    },
+    "progress-end-3": {
+    "description": "progress icon 1",
+    "default": {
+        "fontPath": "./theme/icomoon.woff",
+        "fontCharacter": "\\73"
+    }
+    },
+    "progress-end-4": {
+      "description": "progress icon 1",
+      "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\74"
+      }
+    }
+  }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
