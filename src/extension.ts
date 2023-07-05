@@ -56,47 +56,38 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
         let totalXP = context.globalState.get<number>('totalXP') || 0;
         let level = calculateLevel(totalXP);
-        let xpNeededForNextLevel = calculateXPNeededForNextLevel(level);
-        let xpProgressToNextLevel = calculateRemainingXP(totalXP);
-        vscode.window.showInformationMessage(`You are level ${level}. Total XP: ${xpProgressToNextLevel}. XP needed for next level: ${xpNeededForNextLevel}`);
+        let xpForLevel = calculateXPforLevel(level + 1);
+        let xpProgressToNextLevel = totalXP - calculateTotalXP(level);
+        let xpNeededForNextLevel = xpForLevel - xpProgressToNextLevel;
+        vscode.window.showInformationMessage(`You are level ${level}. XP: ${xpProgressToNextLevel}. XP needed for next level: ${xpNeededForNextLevel}`);
     }));
 }
 
 function updateStatusBar(totalXP: number) {
     let level = calculateLevel(totalXP);
-    let xpNeededForNextLevel = calculateXPNeededForNextLevel(level);
-    let xpProgressToNextLevel = totalXP - calculateXPNeededForNextLevel(level);
-    let progressBar = createProgressBar(xpProgressToNextLevel, xpNeededForNextLevel, 10);
+    let xpForLevel = calculateXPforLevel(level + 1);
+    let xpProgressToNextLevel = totalXP - calculateTotalXP(level);
+    let progressBar = createProgressBar(xpProgressToNextLevel, xpForLevel, 10);
 
     statusBar.text = `Lvl ${level}: ${progressBar}`;
 }
 
 function deactivate() {}
 
+function calculateXPforLevel(level: number): number {
+    //calculate the additional XP needed to reach given level
+    return 1000 + (level-1) * 100;
+}
+
+function calculateTotalXP(level: number): number {
+    //calculate the total XP needed to reach given level
+    return 1000 * level + 100 * level * (level - 1) / 2;
+}
+
 function calculateLevel(totalXP: number): number {
-    const a = 100;
-    const b = 1000;
-    const c = -totalXP;
-  
-    const discriminant = b * b - 4 * a * c;
-    if (discriminant < 0) {
-        return 0;
-    }
-  
-    const level = Math.floor((-b + Math.sqrt(discriminant)) / (2 * a));
-    return level;
-}
-
-function calculateXPNeededForNextLevel(level: number): number {
-	if (level <= -1){return 0;};
-    return 1000 + (level * 100);
-}
-
-function calculateRemainingXP(totalXP: number): number {
-    let currentLevel = calculateLevel(totalXP);
-    let nextLevelXP = calculateXPNeededForNextLevel(currentLevel + 1);
-
-    return nextLevelXP - totalXP;
+    //calculate the level given the total XP using quadratic formula
+    var n = (-950 + Math.sqrt(950 * 950 + 200*totalXP))/100;
+    return Math.floor(n);
 }
 
 function createProgressBar(current: number, total: number, barSize: number = 10): string {
