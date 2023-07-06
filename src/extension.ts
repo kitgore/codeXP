@@ -95,10 +95,10 @@ function createProgressBar(current: number, total: number, barSize: number = 10)
     current = Math.min(current, total); // ensure current does not exceed total
 
     let percentage = current / total;
-    let progress = Math.round(percentage * barSize);
+    let progress = Math.floor(percentage * barSize);
 
     // An array of the icon names in the order that they should appear.
-    let icons = ['progress-3', 'progress-4', 'progress-5', 'progress-6', 'progress-7', 'progress-8', 'progress-9', 'progress-10', 'progress-11', 'progress-12'];
+    let icons = ['progress-3', 'progress-4', 'progress-5', 'progress-6', 'progress-7', 'progress-8', 'progress-9', 'progress-10', 'progress-11', 'progress-12', 'progress-13', 'progress-14'];
 
     // Initialize the progress bar with the beginning icon.
     let progressBar = '$(progress-beginning)';
@@ -110,7 +110,35 @@ function createProgressBar(current: number, total: number, barSize: number = 10)
 
     // If progress is less than barSize, add the appropriate icon from the icons array.
     if (progress < barSize) {
-        progressBar += `$(${icons[Math.floor((percentage % 0.1) * 10)]})`;
+        // Calculate the fraction of the progress.
+        let fraction = (percentage * barSize) % 1;
+        let iconIndex = Math.floor(fraction * icons.length);
+        
+        // Add the icon for the current progress.
+        progressBar += `$(${icons[iconIndex]})`;
+        let isNearEnd = progress === barSize - 1;
+        
+        // Check if icon runs over into the next icon
+        if (iconIndex >= icons.length - 3 && iconIndex <= icons.length - 2) {
+            
+            // Determine the type of icon to add based on the current progress.
+            let progressIconType = isNearEnd ? `progress-end-${icons.length - iconIndex + 1}` : `progress-${icons.length - iconIndex + 1}`;
+            
+            // Add the determined icon to the progress bar.
+            progressBar += `$(${progressIconType})`;
+            
+            // If at end of progress bar, return the progress bar, else increment progress.
+            if (isNearEnd) {
+                return progressBar;
+            }
+            progress++;
+        }
+
+        //Full progress bar icon
+        if (isNearEnd) {
+            progressBar += '$(progress-end-4)';
+            return progressBar;
+        }
     }
 
     // Add the remaining empty space.
