@@ -44,20 +44,22 @@ function listenForDocumentSave(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
         let now = new Date();
         let lastSaveDate = context.globalState.get<Date>('lastSaveDate');
-        console.log("last save date" + lastSaveDate);
-        console.log("now" + now);
-        // let lastSaveDate = new Date();
         let oldXP = getXP(context);
         let newXP = oldXP + getElapsedTimeInSeconds();
+
+        //Restores to original format (date object)
+        if (lastSaveDate) {
+            lastSaveDate = new Date(lastSaveDate);
+        }
 
         if (isNewDay(now, lastSaveDate)) {
             newXP += 1000;  // Apply daily bonus
             context.globalState.update('lastSaveDate', now);  // Update the last save date
         }
 
-        context.globalState.update('totalXP', newXP);
         animateProgressBar(oldXP, newXP, newXP);
         lastSaveTime = now;
+        context.globalState.update('totalXP', newXP);
     }));
 }
 
