@@ -9,10 +9,10 @@ const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
 export function activate(context: vscode.ExtensionContext) {
     setupStatusBar(context);
     listenForXPAddCommand(context);
-    listenForDocumentSave(context);
-    showTotalXPonActivation(context);
     listenForShowInfoCommand(context);
-    setLastSaveDate(context, new Date(2023, 6, 6));
+    listenForDocumentSave(context);
+    initializeStatusBar(context);
+    // setLastSaveDate(context, new Date(2023, 6, 6));
 }
 
 //implement color getting using this hack
@@ -31,13 +31,11 @@ function setupStatusBar(context: vscode.ExtensionContext) {
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.addXP', async () => {
-        let oldXP = getXP(context);
         let xpToAdd = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to add:' });
-
         if (xpToAdd !== undefined) {
-            let newXP = oldXP + parseInt(xpToAdd);
+            let newXP = getXP(context) + parseInt(xpToAdd);
+            animateProgressBar(getXP(context), newXP);
             context.globalState.update('totalXP', newXP);
-            animateProgressBar(oldXP, newXP, newXP);
         }
     }));
 }
@@ -64,7 +62,7 @@ function listenForDocumentSave(context: vscode.ExtensionContext) {
             context.globalState.update('lastSaveDate', now);  // Update the last save date
         }
 
-        animateProgressBar(oldXP, newXP, newXP);
+        animateProgressBar(oldXP, newXP);
         lastSaveTime = now;
         context.globalState.update('totalXP', newXP);
     }));
@@ -76,8 +74,7 @@ function isNewDay(currentDate: Date, lastSaveDate: Date | undefined): boolean {
     }
 
     return currentDate.getDate() !== lastSaveDate.getDate() ||
-           currentDate.getMonth() !== lastSaveDate.getMonth() ||
-           currentDate.getFullYear() !== lastSaveDate.getFullYear();
+           currentDate.getMonth() !== lastSaveDate.getMonth();
 }
 
 function getElapsedTimeInSeconds() {
@@ -94,9 +91,9 @@ function getXP(context: vscode.ExtensionContext) {
     return context.globalState.get<number>('totalXP') || DEFAULT_XP;
 }
 
-function showTotalXPonActivation(context: vscode.ExtensionContext) {
+function initializeStatusBar(context: vscode.ExtensionContext) {
     let totalXP = getXP(context);
-    updateStatusBar(totalXP, totalXP);
+    updateStatusBar(totalXP);
 }
 
 function listenForShowInfoCommand(context: vscode.ExtensionContext) {
@@ -110,9 +107,8 @@ function listenForShowInfoCommand(context: vscode.ExtensionContext) {
     }));
 }
 
-function animateProgressBar(oldXP: number, newXP: number, totalXP: number, steps: number = 100) {
+function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
     // Animate the progress bar from oldXP to newXP in the given number of steps using a sine curve.
-    
     const frequency = .9; // Lower this number to widen the sine curve
     const baseDelay = 10; //delay flucuates between baseDelay and baseDelay + sinRange
     const sinRange = 3;
@@ -127,12 +123,12 @@ function animateProgressBar(oldXP: number, newXP: number, totalXP: number, steps
 
         setTimeout(() => {
             currentXP += xpPerStep;
-            updateStatusBar(currentXP, totalXP);
+            updateStatusBar(currentXP);
         }, i * delay);
     }
 }
 
-function updateStatusBar(currentXP: number, totalXP: number) {
+function updateStatusBar(currentXP: number) {
     let level = calculateLevel(currentXP);
     let xpForLevel = calculateXPforLevel(level + 1);
     let xpProgressToNextLevel = currentXP - calculateTotalXP(level);
@@ -140,7 +136,6 @@ function updateStatusBar(currentXP: number, totalXP: number) {
 
     statusBar.text = `Lvl ${level}: ${progressBar}`;
 }
-
 
 function deactivate() {}
 
