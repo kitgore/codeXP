@@ -15,6 +15,13 @@ export function activate(context: vscode.ExtensionContext) {
     setLastSaveDate(context, new Date(2023, 6, 6));
 }
 
+//implement color getting using this hack
+//https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
+
+//use this to create webview
+//https://code.visualstudio.com/api/extension-guides/webview
+
+
 function setupStatusBar(context: vscode.ExtensionContext) {
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
     statusBar.command = 'codexp.showInfo';
