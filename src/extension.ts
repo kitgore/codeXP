@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 let statusBar: vscode.StatusBarItem;
-let lastSaveTime: Date | undefined;
 
 const DEFAULT_XP = 0;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
@@ -12,7 +11,6 @@ export function activate(context: vscode.ExtensionContext) {
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
     initializeStatusBar(context);
-    // setLastSaveDate(context, new Date(2023, 6, 6));
 }
 
 //implement color getting using this hack
@@ -40,44 +38,43 @@ function listenForXPAddCommand(context: vscode.ExtensionContext) {
     }));
 }
 
-function setLastSaveDate(context: vscode.ExtensionContext, date: Date) {
-    context.globalState.update('lastSaveDate', date);
+function listenForShowInfoCommand(context: vscode.ExtensionContext) {
+    context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
+        let totalXP = getXP(context);
+        let level = calculateLevel(totalXP);
+        let xpForLevel = calculateXPforLevel(level + 1);
+        let currentXPProgress = totalXP - calculateTotalXP(level);
+        let xpNeededForNextLevel = xpForLevel - currentXPProgress;
+        vscode.window.showInformationMessage(`You are level ${level}. XP: ${currentXPProgress}. XP needed for next level: ${xpNeededForNextLevel}`);
+    }));
+}
+
+function setLastSaveTime(context: vscode.ExtensionContext, date: Date = new Date()){
+    context.globalState.update('lastSaveTime', date);
 }
 
 function listenForDocumentSave(context: vscode.ExtensionContext) {
-    lastSaveTime = new Date();
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
-        let now = new Date();
-        let lastSaveDate = context.globalState.get<Date>('lastSaveDate');
+        let lastSaveTime = context.globalState.get<Date>('lastSaveTime');
+        lastSaveTime = lastSaveTime ? new Date(lastSaveTime) : undefined;  //Restores to original format (date object)
+        setLastSaveTime(context);
         let oldXP = getXP(context);
-        let newXP = oldXP + getElapsedTimeInSeconds();
-
-        //Restores to original format (date object)
-        if (lastSaveDate) {
-            lastSaveDate = new Date(lastSaveDate);
-        }
-
-        if (isNewDay(now, lastSaveDate)) {
-            newXP += 1000;  // Apply daily bonus
-            context.globalState.update('lastSaveDate', now);  // Update the last save date
-        }
-
+        let newXP = oldXP + getElapsedTimeInSeconds(lastSaveTime) + (isNewDay(lastSaveTime) ? 1000 : 0); //add elapsed XP and daily bonus
         animateProgressBar(oldXP, newXP);
-        lastSaveTime = now;
         context.globalState.update('totalXP', newXP);
     }));
 }
 
-function isNewDay(currentDate: Date, lastSaveDate: Date | undefined): boolean {
-    if (!lastSaveDate) {
+function isNewDay(lastSaveTime: Date | undefined): boolean {
+    let currentTime = new Date();
+    if (!lastSaveTime) {
         return true;  // This is the first save, so it's a new day
     }
-
-    return currentDate.getDate() !== lastSaveDate.getDate() ||
-           currentDate.getMonth() !== lastSaveDate.getMonth();
+    return currentTime.getDate() !== lastSaveTime.getDate() ||
+           currentTime.getMonth() !== lastSaveTime.getMonth();
 }
 
-function getElapsedTimeInSeconds() {
+function getElapsedTimeInSeconds(lastSaveTime: Date | undefined): number{
     let now = new Date();
     if (lastSaveTime) {
         let elapsedTime = now.getTime() - lastSaveTime.getTime();
@@ -94,17 +91,6 @@ function getXP(context: vscode.ExtensionContext) {
 function initializeStatusBar(context: vscode.ExtensionContext) {
     let totalXP = getXP(context);
     updateStatusBar(totalXP);
-}
-
-function listenForShowInfoCommand(context: vscode.ExtensionContext) {
-    context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
-        let totalXP = getXP(context);
-        let level = calculateLevel(totalXP);
-        let xpForLevel = calculateXPforLevel(level + 1);
-        let currentXPProgress = totalXP - calculateTotalXP(level);
-        let xpNeededForNextLevel = xpForLevel - currentXPProgress;
-        vscode.window.showInformationMessage(`You are level ${level}. XP: ${currentXPProgress}. XP needed for next level: ${xpNeededForNextLevel}`);
-    }));
 }
 
 function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
