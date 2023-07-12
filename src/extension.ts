@@ -1,9 +1,5 @@
-import { get } from 'http';
 import * as vscode from 'vscode';
-
 let statusBar: vscode.StatusBarItem;
-
-const DEFAULT_XP = 0;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
 const DEFAULT_FREQUENCY = .9; // Lower this number to widen the sine curve
 const DEFAULT_BASE_DELAY = 10; //delay fluctuates between baseDelay and baseDelay + sinRange
@@ -21,15 +17,97 @@ function setupStatusBar(context: vscode.ExtensionContext) {
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
     statusBar.command = 'codexp.showInfo';
     statusBar.show();
+    statusBar.color = 'red';
     context.subscriptions.push(statusBar);
+    getStatusbarColor(context).then(rgb => {
+        statusBar.color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1})`;
+    }).catch(error => {
+        vscode.window.showInformationMessage(error);
+    });
 }
 
-//implement color getting using this hack
-//https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
+function getStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | {r: 255, g: 255, b: 255}> {
+    return new Promise((resolve, reject) => {
+        const panel = vscode.window.createWebviewPanel(
+            'themeInfo', 
+            'Theme Information', 
+            vscode.ViewColumn.One, 
+            {
+                enableScripts: true
+            }
+        );
+        panel.webview.html = getWebViewContent();
+        panel.webview.onDidReceiveMessage(
+            message => {
+                let iconForeground;
+                for (let obj of message) {
+                    const key = Object.keys(obj)[0];
+                    if (key === '--vscode-statusBar-foreground') {
+                        iconForeground = obj[key];
+                        break;
+                    }
+                }
+                if (iconForeground) {
+                    const rgb = hexToRgb(iconForeground);
+                    if (rgb) {
+                        vscode.window.showInformationMessage(`Icon foreground color is rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`);
+                        resolve(rgb);
+                    } else {
+                        reject();
+                    }
+                } else {
+                    reject();
+                }
+                panel.dispose();
+            },
+            undefined,
+            context.subscriptions
+        );
+    });
+}
 
-//use this to create webview
-//https://code.visualstudio.com/api/extension-guides/webview
+function hexToRgb(hex: string): {r: number, g: number, b: number}{
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : {r: 255, g: 255, b: 255};
+}
 
+function getWebViewContent() {
+    const nonce = getNonce();
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script nonce="${nonce}">
+            const vscode = acquireVsCodeApi();
+            vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
+                (rv) => {
+                    return {
+                        [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
+                    }
+                }
+            ));
+        </script>
+    </body>
+    </html>`;
+}
+
+function getNonce() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.addXP', async () => {
@@ -74,7 +152,6 @@ function getElapsedTimeInSeconds(lastSaveTime: Date | undefined): number{
     }
     return 0;
 }
-
 function isNewDay(lastSaveTime: Date | undefined): boolean {
     let currentTime = new Date();
     if (!lastSaveTime) {
@@ -84,7 +161,7 @@ function isNewDay(lastSaveTime: Date | undefined): boolean {
 }
 
 function getXP(context: vscode.ExtensionContext) {
-    return context.globalState.get<number>('totalXP') || DEFAULT_XP;
+    return context.globalState.get<number>('totalXP') || 0;
 }
 function setXP(context: vscode.ExtensionContext, xp: number) {
     context.globalState.update('totalXP', xp);
@@ -180,3 +257,16 @@ function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
         }, i * delay);
     }
 }
+
+
+//implement color getting using this hack
+//https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
+
+//use this to create webview
+//https://code.visualstudio.com/api/extension-guides/webview
+
+// function listenForThemeChange(context: vscode.ExtensionContext) {
+//     context.subscriptions.push(vscode.window.onDidChangeActiveColorTheme(() => {
+//         createWebView(context);
+//     }));
+// }
