@@ -1,3 +1,6 @@
 
 Todo:
-  ☐ Remove setLastSaveDate and use singular setTime
+  ✔ Remove setLastSaveDate and use singular setTime @done(23-07-12 18:03)
+  ✔ Cache theme title and only launch webview if theme title changes @done(23-07-12 18:19)
+  ☐ Get fadeStatusBar() functioning
+  ☐ Add splash text for daily save etc

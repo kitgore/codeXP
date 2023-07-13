@@ -1,3 +1,4 @@
+import { get } from 'http';
 import * as vscode from 'vscode';
 let statusBar: vscode.StatusBarItem;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
@@ -7,106 +8,11 @@ const DEFAULT_SIN_RANGE = 3;
 
 export function activate(context: vscode.ExtensionContext) {
     setupStatusBar(context);
+    cacheCurrentThemeTitle(context);
     listenForXPAddCommand(context);
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
     updateStatusBar(getXP(context)); //initialize status bar
-}
-
-function setupStatusBar(context: vscode.ExtensionContext) {
-    statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-    statusBar.command = 'codexp.showInfo';
-    statusBar.show();
-    statusBar.color = 'red';
-    context.subscriptions.push(statusBar);
-    getStatusbarColor(context).then(rgb => {
-        statusBar.color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${1})`;
-    }).catch(error => {
-        vscode.window.showInformationMessage(error);
-    });
-}
-
-function getStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | {r: 255, g: 255, b: 255}> {
-    return new Promise((resolve, reject) => {
-        const panel = vscode.window.createWebviewPanel(
-            'themeInfo', 
-            'Theme Information', 
-            vscode.ViewColumn.One, 
-            {
-                enableScripts: true
-            }
-        );
-        panel.webview.html = getWebViewContent();
-        panel.webview.onDidReceiveMessage(
-            message => {
-                let iconForeground;
-                for (let obj of message) {
-                    const key = Object.keys(obj)[0];
-                    if (key === '--vscode-statusBar-foreground') {
-                        iconForeground = obj[key];
-                        break;
-                    }
-                }
-                if (iconForeground) {
-                    const rgb = hexToRgb(iconForeground);
-                    if (rgb) {
-                        vscode.window.showInformationMessage(`Icon foreground color is rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`);
-                        resolve(rgb);
-                    } else {
-                        reject();
-                    }
-                } else {
-                    reject();
-                }
-                panel.dispose();
-            },
-            undefined,
-            context.subscriptions
-        );
-    });
-}
-
-function hexToRgb(hex: string): {r: number, g: number, b: number}{
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : {r: 255, g: 255, b: 255};
-}
-
-function getWebViewContent() {
-    const nonce = getNonce();
-    return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <script nonce="${nonce}">
-            const vscode = acquireVsCodeApi();
-            vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
-                (rv) => {
-                    return {
-                        [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
-                    }
-                }
-            ));
-        </script>
-    </body>
-    </html>`;
-}
-
-function getNonce() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 32; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
 }
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
@@ -143,6 +49,103 @@ function listenForDocumentSave(context: vscode.ExtensionContext): void {
     }));
 }
 
+function getCurrentThemeTitle(): string | undefined{
+    return vscode.workspace.getConfiguration().get('workbench.colorTheme');
+}
+
+function cacheCurrentThemeTitle(context: vscode.ExtensionContext) {
+    const currentThemeTitle = getCurrentThemeTitle();
+    context.globalState.update('themeTitle', currentThemeTitle);
+}
+
+function hasThemeChanged(context: vscode.ExtensionContext): boolean {
+    const cachedThemeTitle = context.globalState.get('themeTitle');
+    const currentThemeTitle = getCurrentThemeTitle();
+    return cachedThemeTitle !== currentThemeTitle;
+}
+
+async function setupStatusBar(context: vscode.ExtensionContext) {
+    statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+    statusBar.command = 'codexp.showInfo';
+    statusBar.show();
+    context.subscriptions.push(statusBar);
+    if (hasThemeChanged(context)) {
+        cacheCurrentThemeTitle(context);
+        await calculateStatusbarColor(context).then(rgb => {
+            setStatusbarColor(context, rgb);
+        }).catch(error => {
+            vscode.window.showInformationMessage(error);
+        });
+    } else {
+        const rgb = getStatusbarColor(context);
+        setStatusbarColor(context, rgb);
+    }
+}
+
+function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | { r: 255, g: 255, b: 255 }> {
+    //hacky way to retrieve theme color by creating a webview and reading its style
+    return new Promise((resolve, reject) => {
+        const panel = vscode.window.createWebviewPanel(
+            'themeInfo', 
+            'Theme Information', 
+            vscode.ViewColumn.Beside, // or vscode.ViewColumn.Two
+            { enableScripts: true }
+        );
+        panel.webview.html = getWebViewContent();
+        panel.webview.onDidReceiveMessage(message => {
+            for (let obj of message) {
+                const key = Object.keys(obj)[0];
+                if (key === '--vscode-statusBar-foreground') {
+                    const rgb = hexToRgb(obj[key]);
+                    if (rgb) {
+                        resolve(rgb);
+                    } else {
+                        reject();
+                    }
+                    panel.dispose();
+                    return;
+                }
+            }
+            reject();
+            panel.dispose();
+        }, undefined, context.subscriptions);
+    });
+}
+
+async function fadeStatusBar(context: vscode.ExtensionContext, duration = 1000) {
+    let step = 0.1; // step size for decrementing alpha value
+    let interval = duration * step; // interval for setTimeout
+
+    // retrieve RGB values from globalState
+    const rgb = context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
+
+    // Initialize alpha at 1.0
+    let alpha = 1.0;
+
+    // Function to update the color and schedule the next update
+    const updateColor = (): Promise<void> => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                alpha -= step;
+                if (alpha < 0) {alpha = 0;}; // ensure alpha doesn't go below 0
+
+                // set new color
+                statusBar.color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+
+                // If alpha is still above 0, schedule another update; otherwise, resolve the Promise
+                if (alpha > 0) {
+                    resolve(updateColor());
+                } else {
+                    resolve();
+                }
+            }, interval);
+        });
+    };
+
+    // Start the update process
+    await updateColor();
+}
+
 function getElapsedTimeInSeconds(lastSaveTime: Date | undefined): number{
     let now = new Date();
     if (lastSaveTime) {
@@ -171,6 +174,13 @@ function getLastSaveTime(context: vscode.ExtensionContext): Date | undefined {
 }
 function setLastSaveTime(context: vscode.ExtensionContext, date: Date = new Date()){
     context.globalState.update('lastSaveTime', date);
+}
+function getStatusbarColor(context: vscode.ExtensionContext): { r: number, g: number, b: number } {
+    return context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
+}
+function setStatusbarColor(context: vscode.ExtensionContext, color: { r: number, g: number, b: number }) {
+    context.globalState.update('statusBarColor', color);
+    statusBar.color = `rgba(${color.r}, ${color.g}, ${color.b}, ${1})`;
 }
 
 function calculateLevel(totalXP: number): number {
@@ -232,7 +242,6 @@ function createProgressBar(current: number, total: number, barSize: number = 10)
     progressBar += '$(progress-end-1)';
     return progressBar;
 }
-
 function updateStatusBar(currentXP: number) {
     let level = calculateLevel(currentXP);
     let xpForLevel = calculateXPforLevel(level + 1);
@@ -241,7 +250,6 @@ function updateStatusBar(currentXP: number) {
     
     statusBar.text = `Lvl ${level}: ${progressBar}`;
 }
-
 function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
     steps = (newXP - oldXP) / 17; 
     let xpPerStep = (newXP - oldXP) / steps;
@@ -256,6 +264,48 @@ function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
             updateStatusBar(currentXP);
         }, i * delay);
     }
+}
+
+//getStatusBar helper functions
+function hexToRgb(hex: string): {r: number, g: number, b: number}{
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : {r: 255, g: 255, b: 255};
+}
+function getWebViewContent() {
+    const nonce = getNonce();
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script nonce="${nonce}">
+            const vscode = acquireVsCodeApi();
+            vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
+                (rv) => {
+                    return {
+                        [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
+                    }
+                }
+            ));
+        </script>
+    </body>
+    </html>`;
+}
+function getNonce() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 32; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
 }
 
 
