@@ -1,8 +1,7 @@
-import { get } from 'http';
 import * as vscode from 'vscode';
 let statusBar: vscode.StatusBarItem;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
-const DEFAULT_FREQUENCY = .9; // Lower this number to widen the sine curve
+const DEFAULT_FREQUENCY = .8; // Lower this number to widen the sine curve
 const DEFAULT_BASE_DELAY = 10; //delay fluctuates between baseDelay and baseDelay + sinRange
 const DEFAULT_SIN_RANGE = 3;
 
@@ -13,6 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
     updateStatusBar(getXP(context)); //initialize status bar
+    setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //set last save time to yesterday
+    setCurrentStreak(context, 1);
 }
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
@@ -28,18 +29,15 @@ function listenForXPAddCommand(context: vscode.ExtensionContext) {
 
 function listenForShowInfoCommand(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
+        if(hasThemeChanged(context)) {
+            updateTheme(context);
+        }
         let totalXP = getXP(context);
         let level = calculateLevel(totalXP);
         let xpForLevel = calculateXPforLevel(level + 1);
         let currentXPProgress = totalXP - calculateTotalXP(level);
-        let xpNeededForNextLevel = xpForLevel - currentXPProgress;
-        splashText(context, `${currentXPProgress}/${xpForLevel} XP`, 1500);
-    //     fadeStatusBar(context).then(() => {
-    //         statusBar.text = `Lvl ${level}:` + convertToSymbolString(`   Daily XP +1000   `);
-    //         fadeStatusBar(context, true).then(() => {
-    //     vscode.window.showInformationMessage(`You are level ${level}. XP: ${currentXPProgress}. XP needed for next level: ${xpNeededForNextLevel}`);
-    //         });
-    // });
+        getCurrentStreak(context) <= 1 ? splashText(context, [`${currentXPProgress}/${xpForLevel} XP`], 1500) :
+        splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`], 1500);
     }));
 }
 
@@ -50,9 +48,21 @@ function listenForDocumentSave(context: vscode.ExtensionContext): void {
         setLastSaveTime(context); //sets the global to current time after retrieved
         let oldXP = getXP(context);
         let newXP = oldXP + getElapsedTimeInSeconds(lastSaveTime) + (isNewDay(lastSaveTime) ? 1000 : 0); //add elapsed XP and daily bonus
-        animateProgressBar(oldXP, newXP);
+        (isNewDay(lastSaveTime) ? splashText(context, ['Daily XP +1000']).then(() => animateProgressBar(oldXP, newXP), () => addStreak(context, lastSaveTime)) 
+        : Promise.resolve()).then(() => {
+            animateProgressBar(oldXP, newXP);
+        });
         setXP(context, newXP);
     }));
+}
+
+function addStreak(context: vscode.ExtensionContext, lastSaveTime: Date | undefined): void {
+    //checks if the last save time was yesterday, if so, increment streak, otherwise reset streak
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    lastSaveTime && lastSaveTime.getDate() === yesterday.getDate()
+        && lastSaveTime.getMonth() === yesterday.getMonth()
+        && lastSaveTime.getFullYear() === yesterday.getFullYear() ? setCurrentStreak(context, getCurrentStreak(context) + 1) : setCurrentStreak(context, 1);
 }
 
 function getCurrentThemeTitle(): string | undefined{
@@ -71,6 +81,14 @@ function hasThemeChanged(context: vscode.ExtensionContext): boolean {
     return cachedThemeTitle !== currentThemeTitle;
 }
 
+function updateTheme(context: vscode.ExtensionContext) {
+    //REFACTOR
+    cacheCurrentThemeTitle(context);
+    calculateStatusbarColor(context)
+        .then(rgb => setStatusbarColor(context, rgb))
+        .catch(error => vscode.window.showInformationMessage(error));
+}
+
 async function setupStatusBar(context: vscode.ExtensionContext) {
     //REFACTOR
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
@@ -78,10 +96,7 @@ async function setupStatusBar(context: vscode.ExtensionContext) {
     statusBar.show();
     context.subscriptions.push(statusBar);
     if (hasThemeChanged(context)) {
-        cacheCurrentThemeTitle(context);
-        calculateStatusbarColor(context)
-            .then(rgb => setStatusbarColor(context, rgb))
-            .catch(error => vscode.window.showInformationMessage(error));
+        updateTheme(context);
     } else {
         const rgb = getStatusbarColor(context);
         setStatusbarColor(context, rgb);
@@ -124,17 +139,20 @@ function delay(ms: number): Promise<void> {
     });
   }
 
-async function splashText(context: vscode.ExtensionContext, text: string, duration = 1000, fadeDelay = 300) {
+async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
     const statusLength = 23;
-    let output = ' '.repeat((statusLength - text.length)/2) + text + ' '.repeat(((statusLength - text.length)/2) + (statusLength - text.length)%2);
     let oldText = statusBar.text;
-    await fadeStatusBar(context);
-    statusBar.text = convertToSymbolString(output);
-    await fadeStatusBar(context, true, fadeDelay);
-    await delay(duration);
+    for (let i = 0; i < text.length; i++) {
+        let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
+        await fadeStatusBar(context);
+        statusBar.text = convertToSymbolString(output);
+        await fadeStatusBar(context, true, fadeDelay);
+        await delay(duration);
+    }
     await fadeStatusBar(context);
     statusBar.text = oldText;
     await fadeStatusBar(context, true, fadeDelay);
+    await delay(additionalDelay);
 }
 
 async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, duration = 300) {
@@ -197,6 +215,12 @@ function getStatusbarColor(context: vscode.ExtensionContext): { r: number, g: nu
 function setStatusbarColor(context: vscode.ExtensionContext, color: { r: number, g: number, b: number }) {
     context.globalState.update('statusBarColor', color);
     statusBar.color = `rgba(${color.r}, ${color.g}, ${color.b}, ${1})`;
+}
+function getCurrentStreak(context: vscode.ExtensionContext): number {
+    return context.globalState.get<number>('currentStreak') || 0;
+}
+function setCurrentStreak(context: vscode.ExtensionContext, streak: number) {
+    context.globalState.update('currentStreak', streak);
 }
 
 function calculateLevel(totalXP: number): number {

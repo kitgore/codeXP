@@ -1,10 +1,10 @@
 
 Todo:
-  ✔ Remove setLastSaveDate and use singular setTime @done(23-07-12 18:03)
-  ✔ Cache theme title and only launch webview if theme title changes @done(23-07-12 18:19)
-  ✔ Get fadeStatusBar() functioning @done(23-07-12 19:02)
-  ☐ Add splash text for daily save etc
-    ☐ Create function to calculate consistent spacing
-    ☐ Implement monospace font
-  ☐ Implement Streaks
+  [X] Remove setLastSaveDate and use singular setTime
+  [X] Cache theme title and only launch webview if theme title changes
+  [X] Get fadeStatusBar() functioning
+  [X] Add splash text for daily save etc
+    [X] Create function to calculate consistent spacing
+    [X] Implement monospace font
+  [ ] Implement Streaks
   
