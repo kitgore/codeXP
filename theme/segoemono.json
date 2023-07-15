@@ -1,0 +1,303 @@
+{
+	"fonts": [
+		{
+			"id": "segoemono",
+			"src": [
+				{
+					"path": "./SegoeMono.woff",
+					"format": "woff"
+				}
+			],
+			"weight": "normal",
+			"style": "normal"
+		}
+	],
+        "iconDefinitions": {
+            "sm-exclamation-mark": {
+                "fontCharacter": "\\21"
+            },
+            "sm-double-quote": {
+                "fontCharacter": "\\22"
+            },
+            "sm-hash": {
+                "fontCharacter": "\\23"
+            },
+            "sm-dollar": {
+                "fontCharacter": "\\24"
+            },
+            "sm-percent": {
+                "fontCharacter": "\\25"
+            },
+            "sm-ampersand": {
+                "fontCharacter": "\\26"
+            },
+            "sm-single-quote": {
+                "fontCharacter": "\\27"
+            },
+            "sm-left-parenthesis": {
+                "fontCharacter": "\\28"
+            },
+            "sm-right-parenthesis": {
+                "fontCharacter": "\\29"
+            },
+            "sm-asterisk": {
+                "fontCharacter": "\\2a"
+            },
+            "sm-plus": {
+                "fontCharacter": "\\2b"
+            },
+            "sm-comma": {
+                "fontCharacter": "\\2c"
+            },
+            "sm-minus": {
+                "fontCharacter": "\\2d"
+            },
+            "sm-period": {
+                "fontCharacter": "\\2e"
+            },
+            "sm-slash": {
+                "fontCharacter": "\\2f"
+            },
+            "sm-0": {
+                "fontCharacter": "\\30"
+            },
+            "sm-1": {
+                "fontCharacter": "\\31"
+            },
+            "sm-2": {
+                "fontCharacter": "\\32"
+            },
+            "sm-3": {
+                "fontCharacter": "\\33"
+            },
+            "sm-4": {
+                "fontCharacter": "\\34"
+            },
+            "sm-5": {
+                "fontCharacter": "\\35"
+            },
+            "sm-6": {
+                "fontCharacter": "\\36"
+            },
+            "sm-7": {
+                "fontCharacter": "\\37"
+            },
+            "sm-8": {
+                "fontCharacter": "\\38"
+            },
+            "sm-9": {
+                "fontCharacter": "\\39"
+            },
+            "sm-colon": {
+                "fontCharacter": "\\3a"
+            },
+            "sm-semicolon": {
+                "fontCharacter": "\\3b"
+            },
+            "sm-less-than": {
+                "fontCharacter": "\\3c"
+            },
+            "sm-equal": {
+                "fontCharacter": "\\3d"
+            },
+            "sm-greater-than": {
+                "fontCharacter": "\\3e"
+            },
+            "sm-question-mark": {
+                "fontCharacter": "\\3f"
+            },
+            "sm-at": {
+                "fontCharacter": "\\40"
+            },
+            "sm-A": {
+                "fontCharacter": "\\41"
+            },
+            "sm-B": {
+                "fontCharacter": "\\42"
+            },
+            "sm-C": {
+                "fontCharacter": "\\43"
+            },
+            "sm-D": {
+                "fontCharacter": "\\44"
+            },
+            "sm-E": {
+                "fontCharacter": "\\45"
+            },
+            "sm-F": {
+                "fontCharacter": "\\46"
+            },
+            "sm-G": {
+                "fontCharacter": "\\47"
+            },
+            "sm-H": {
+                "fontCharacter": "\\48"
+            },
+            "sm-I": {
+                "fontCharacter": "\\49"
+            },
+            "sm-J": {
+                "fontCharacter": "\\4a"
+            },
+            "sm-K": {
+                "fontCharacter": "\\4b"
+            },
+            "sm-L": {
+                "fontCharacter": "\\4c"
+            },
+            "sm-M": {
+                "fontCharacter": "\\4d"
+            },
+            "sm-N": {
+                "fontCharacter": "\\4e"
+            },
+            "sm-O": {
+                "fontCharacter": "\\4f"
+            },
+            "sm-P": {
+                "fontCharacter": "\\50"
+            },
+            "sm-Q": {
+                "fontCharacter": "\\51"
+            },
+            "sm-R": {
+                "fontCharacter": "\\52"
+            },
+            "sm-S": {
+                "fontCharacter": "\\53"
+            },
+            "sm-T": {
+                "fontCharacter": "\\54"
+            },
+            "sm-U": {
+                "fontCharacter": "\\55"
+            },
+            "sm-V": {
+                "fontCharacter": "\\56"
+            },
+            "sm-W": {
+                "fontCharacter": "\\57"
+            },
+            "sm-X": {
+                "fontCharacter": "\\58"
+            },
+            "sm-Y": {
+                "fontCharacter": "\\59"
+            },
+            "sm-Z": {
+                "fontCharacter": "\\5a"
+            },
+            "sm-left-square-bracket": {
+                "fontCharacter": "\\5b"
+            },
+            "sm-backslash": {
+                "fontCharacter": "\\5c"
+            },
+            "sm-right-square-bracket": {
+                "fontCharacter": "\\5d"
+            },
+            "sm-caret": {
+                "fontCharacter": "\\5e"
+            },
+            "sm-underscore": {
+                "fontCharacter": "\\5f"
+            },
+            "sm-grave-accent": {
+                "fontCharacter": "\\60"
+            },
+            "sm-a": {
+                "fontCharacter": "\\61"
+            },
+            "sm-b": {
+                "fontCharacter": "\\62"
+            },
+            "sm-c": {
+                "fontCharacter": "\\63"
+            },
+            "sm-d": {
+                "fontCharacter": "\\64"
+            },
+            "sm-e": {
+                "fontCharacter": "\\65"
+            },
+            "sm-f": {
+                "fontCharacter": "\\66"
+            },
+            "sm-g": {
+                "fontCharacter": "\\67"
+            },
+            "sm-h": {
+                "fontCharacter": "\\68"
+            },
+            "sm-i": {
+                "fontCharacter": "\\69"
+            },
+            "sm-j": {
+                "fontCharacter": "\\6a"
+            },
+            "sm-k": {
+                "fontCharacter": "\\6b"
+            },
+            "sm-l": {
+                "fontCharacter": "\\6c"
+            },
+            "sm-m": {
+                "fontCharacter": "\\6d"
+            },
+            "sm-n": {
+                "fontCharacter": "\\6e"
+            },
+            "sm-o": {
+                "fontCharacter": "\\6f"
+            },
+            "sm-p": {
+                "fontCharacter": "\\70"
+            },
+            "sm-q": {
+                "fontCharacter": "\\71"
+            },
+            "sm-r": {
+                "fontCharacter": "\\72"
+            },
+            "sm-s": {
+                "fontCharacter": "\\73"
+            },
+            "sm-t": {
+                "fontCharacter": "\\74"
+            },
+            "sm-u": {
+                "fontCharacter": "\\75"
+            },
+            "sm-v": {
+                "fontCharacter": "\\76"
+            },
+            "sm-w": {
+                "fontCharacter": "\\77"
+            },
+            "sm-x": {
+                "fontCharacter": "\\78"
+            },
+            "sm-y": {
+                "fontCharacter": "\\79"
+            },
+            "sm-z": {
+                "fontCharacter": "\\7a"
+            },
+            "sm-left-curly-brace": {
+                "fontCharacter": "\\7b"
+            },
+            "sm-vertical-line": {
+                "fontCharacter": "\\7c"
+            },
+            "sm-right-curly-brace": {
+                "fontCharacter": "\\7d"
+            },
+            "sm-tilde": {
+                "fontCharacter": "\\7e"
+            },
+            "sm-space":{
+                "fontCharacter": "\\a0"
+            }
+        }
+    }
+    

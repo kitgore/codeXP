@@ -27,6 +27,11 @@
         "id": "progressbar",
         "label": "Progressbar icons",
         "path": "./theme/product-icon-theme.json"
+      },
+      {
+        "id": "segoemono",
+        "label": "segoemono font",
+        "path": "./theme/segoemono.json"
       }
     ],
     "icons": {
@@ -170,7 +175,665 @@
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\74"
       }
+    },
+    "sm-double-quote": {
+      "description": "Double quote icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\22"
+      }
+  },
+  "sm-hash": {
+      "description": "Hash icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\23"
+      }
+  },
+  "sm-dollar": {
+      "description": "Dollar icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\24"
+      }
+  },
+  "sm-percent": {
+      "description": "Percent icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\25"
+      }
+  },
+  "sm-ampersand": {
+      "description": "Ampersand icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\26"
+      }
+  },
+  "sm-single-quote": {
+      "description": "Single quote icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\27"
+      }
+  },
+  "sm-left-parenthesis": {
+      "description": "Left parenthesis icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\28"
+      }
+  },
+  "sm-right-parenthesis": {
+      "description": "Right parenthesis icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\29"
+      }
+  },
+  "sm-asterisk": {
+      "description": "Asterisk icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2a"
+      }
+  },
+  "sm-plus": {
+      "description": "Plus icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2b"
+      }
+  },
+  "sm-comma": {
+      "description": "Comma icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2c"
+      }
+  },
+  "sm-minus": {
+      "description": "Minus icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2d"
+      }
+  },
+  "sm-period": {
+      "description": "Period icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2e"
+      }
+  },
+  "sm-slash": {
+      "description": "Slash icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\2f"
+      }
+  },
+  "sm-0": {
+      "description": "Zero icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\30"
+      }
+  },
+  "sm-1": {
+      "description": "One icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\31"
+      }
+  },
+  "sm-2": {
+      "description": "Two icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\32"
+      }
+  },
+  "sm-3": {
+      "description": "Three icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\33"
+      }
+  },
+  "sm-4": {
+      "description": "Four icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\34"
+      }
+  },
+  "sm-5": {
+      "description": "Five icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\35"
+      }
+  },
+  "sm-6": {
+      "description": "Six icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\36"
+      }
+  },
+  "sm-7": {
+      "description": "Seven icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\37"
+      }
+  },
+  "sm-8": {
+      "description": "Eight icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\38"
+      }
+  },
+  "sm-9": {
+      "description": "Nine icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\39"
+      }
+  },
+  "sm-colon": {
+      "description": "Colon icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3a"
+      }
+  },
+  "sm-semicolon": {
+      "description": "Semicolon icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3b"
+      }
+  },
+  "sm-less-than": {
+      "description": "Less than icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3c"
+      }
+  },
+  "sm-equals": {
+      "description": "Equals icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3d"
+      }
+  },
+  "sm-greater-than": {
+      "description": "Greater than icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3e"
+      }
+  },
+  "sm-question-mark": {
+      "description": "Question mark icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\3f"
+      }
+  },
+  "sm-at": {
+      "description": "At icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\40"
+      }
+  },
+  "sm-A": {
+      "description": "Capital letter A icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\41"
+      }
+  },
+  "sm-B": {
+      "description": "Capital letter B icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\42"
+      }
+  },
+  "sm-C": {
+      "description": "Capital letter C icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\43"
+      }
+  },
+  "sm-D": {
+      "description": "Capital letter D icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\44"
+      }
+  },
+  "sm-E": {
+      "description": "Capital letter E icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\45"
+      }
+  },
+  "sm-F": {
+      "description": "Capital letter F icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\46"
+      }
+  },
+  "sm-G": {
+      "description": "Capital letter G icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\47"
+      }
+  },
+  "sm-H": {
+      "description": "Capital letter H icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\48"
+      }
+  },
+  "sm-I": {
+      "description": "Capital letter I icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\49"
+      }
+  },
+  "sm-J": {
+      "description": "Capital letter J icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4a"
+      }
+  },
+  "sm-K": {
+      "description": "Capital letter K icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4b"
+      }
+  },
+  "sm-L": {
+      "description": "Capital letter L icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4c"
+      }
+  },
+  "sm-M": {
+      "description": "Capital letter M icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4d"
+      }
+  },
+  "sm-N": {
+      "description": "Capital letter N icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4e"
+      }
+  },
+  "sm-O": {
+      "description": "Capital letter O icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\4f"
+      }
+  },
+  "sm-P": {
+      "description": "Capital letter P icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\50"
+      }
+  },
+  "sm-Q": {
+      "description": "Capital letter Q icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\51"
+      }
+  },
+  "sm-R": {
+      "description": "Capital letter R icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\52"
+      }
+  },
+  "sm-S": {
+      "description": "Capital letter S icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\53"
+      }
+  },
+  "sm-T": {
+      "description": "Capital letter T icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\54"
+      }
+  },
+  "sm-U": {
+      "description": "Capital letter U icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\55"
+      }
+  },
+  "sm-V": {
+      "description": "Capital letter V icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\56"
+      }
+  },
+  "sm-W": {
+      "description": "Capital letter W icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\57"
+      }
+  },
+  "sm-X": {
+      "description": "Capital letter X icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\58"
+      }
+  },
+  "sm-Y": {
+      "description": "Capital letter Y icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\59"
+      }
+  },
+  "sm-Z": {
+      "description": "Capital letter Z icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5a"
+      }
+  },
+  "sm-open-bracket": {
+      "description": "Open bracket icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5b"
+      }
+  },
+  "sm-backslash": {
+      "description": "Backslash icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5c"
+      }
+  },
+  "sm-close-bracket": {
+      "description": "Close bracket icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5d"
+      }
+  },
+  "sm-caret": {
+      "description": "Caret icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5e"
+      }
+  },
+  "sm-underscore": {
+      "description": "Underscore icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\5f"
+      }
+  },
+  "sm-grave-accent": {
+      "description": "Grave accent icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\60"
+      }
+  },
+  "sm-a": {
+      "description": "Lowercase letter a icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\61"
+      }
+  },
+  "sm-b": {
+      "description": "Lowercase letter b icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\62"
+      }
+  },
+  "sm-c": {
+      "description": "Lowercase letter c icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\63"
+      }
+  },
+  "sm-d": {
+      "description": "Lowercase letter d icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\64"
+      }
+  },
+  "sm-e": {
+      "description": "Lowercase letter e icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\65"
+      }
+  },
+  "sm-f": {
+      "description": "Lowercase letter f icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\66"
+      }
+  },
+  "sm-g": {
+      "description": "Lowercase letter g icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\67"
+      }
+  },
+  "sm-h": {
+      "description": "Lowercase letter h icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\68"
+      }
+  },
+  "sm-i": {
+      "description": "Lowercase letter i icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\69"
+      }
+  },
+  "sm-j": {
+      "description": "Lowercase letter j icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6a"
+      }
+  },
+  "sm-k": {
+      "description": "Lowercase letter k icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6b"
+      }
+  },
+  "sm-l": {
+      "description": "Lowercase letter l icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6c"
+      }
+  },
+  "sm-m": {
+      "description": "Lowercase letter m icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6d"
+      }
+  },
+  "sm-n": {
+      "description": "Lowercase letter n icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6e"
+      }
+  },
+  "sm-o": {
+      "description": "Lowercase letter o icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\6f"
+      }
+  },
+  "sm-p": {
+      "description": "Lowercase letter p icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\70"
+      }
+  },
+  "sm-q": {
+      "description": "Lowercase letter q icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\71"
+      }
+  },
+  "sm-r": {
+      "description": "Lowercase letter r icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\72"
+      }
+  },
+  "sm-s": {
+      "description": "Lowercase letter s icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\73"
+      }
+  },
+  "sm-t": {
+      "description": "Lowercase letter t icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\74"
+      }
+  },
+  "sm-u": {
+      "description": "Lowercase letter u icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\75"
+      }
+  },
+  "sm-v": {
+      "description": "Lowercase letter v icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\76"
+      }
+  },
+  "sm-w": {
+      "description": "Lowercase letter w icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\77"
+      }
+  },
+  "sm-x": {
+      "description": "Lowercase letter x icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\78"
+      }
+  },
+  "sm-y": {
+      "description": "Lowercase letter y icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\79"
+      }
+  },
+  "sm-z": {
+      "description": "Lowercase letter z icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\7a"
+      }
+  },
+  "sm-open-brace": {
+      "description": "Open brace icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\7b"
+      }
+  },
+  "sm-vertical-bar": {
+      "description": "Vertical bar icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\7c"
+      }
+  },
+  "sm-close-brace": {
+      "description": "Close brace icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\7d"
+      }
+  },
+  "sm-tilde": {
+      "description": "Tilde icon",
+      "default": {
+          "fontPath": "./theme/SegoeMono.woff",
+          "fontCharacter": "\\7e"
+      }
+  },
+  "sm-space": {
+    "description": "Space icon",
+    "default": {
+        "fontPath": "./theme/SegoeMono.woff",
+        "fontCharacter": "\\a0"
     }
+}
   }
   },
   "scripts": {
