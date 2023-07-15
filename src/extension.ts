@@ -33,12 +33,13 @@ function listenForShowInfoCommand(context: vscode.ExtensionContext) {
         let xpForLevel = calculateXPforLevel(level + 1);
         let currentXPProgress = totalXP - calculateTotalXP(level);
         let xpNeededForNextLevel = xpForLevel - currentXPProgress;
-        fadeStatusBar(context).then(() => {
-            statusBar.text = `Lvl ${level}:` + convertToSymbolString(`   hello    `);
-            fadeStatusBar(context, true).then(() => {
-        vscode.window.showInformationMessage(`You are level ${level}. XP: ${currentXPProgress}. XP needed for next level: ${xpNeededForNextLevel}`);
-            });
-    });
+        splashText(context, `${currentXPProgress}/${xpForLevel} XP`, 1500);
+    //     fadeStatusBar(context).then(() => {
+    //         statusBar.text = `Lvl ${level}:` + convertToSymbolString(`   Daily XP +1000   `);
+    //         fadeStatusBar(context, true).then(() => {
+    //     vscode.window.showInformationMessage(`You are level ${level}. XP: ${currentXPProgress}. XP needed for next level: ${xpNeededForNextLevel}`);
+    //         });
+    // });
     }));
 }
 
@@ -64,12 +65,14 @@ function cacheCurrentThemeTitle(context: vscode.ExtensionContext) {
 }
 
 function hasThemeChanged(context: vscode.ExtensionContext): boolean {
+    //REFACTOR
     const cachedThemeTitle = context.globalState.get('themeTitle');
     const currentThemeTitle = getCurrentThemeTitle();
     return cachedThemeTitle !== currentThemeTitle;
 }
 
 async function setupStatusBar(context: vscode.ExtensionContext) {
+    //REFACTOR
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
     statusBar.command = 'codexp.showInfo';
     statusBar.show();
@@ -115,7 +118,26 @@ function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r:
     });
 }
 
-async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, duration = 400) {
+function delay(ms: number): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+async function splashText(context: vscode.ExtensionContext, text: string, duration = 1000, fadeDelay = 300) {
+    const statusLength = 23;
+    let output = ' '.repeat((statusLength - text.length)/2) + text + ' '.repeat(((statusLength - text.length)/2) + (statusLength - text.length)%2);
+    let oldText = statusBar.text;
+    await fadeStatusBar(context);
+    statusBar.text = convertToSymbolString(output);
+    await fadeStatusBar(context, true, fadeDelay);
+    await delay(duration);
+    await fadeStatusBar(context);
+    statusBar.text = oldText;
+    await fadeStatusBar(context, true, fadeDelay);
+}
+
+async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, duration = 300) {
     let step = 0.05; // step size for changing alpha value
     let interval = duration * step;
     const rgb = context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
@@ -242,7 +264,7 @@ function updateStatusBar(currentXP: number) {
     let xpProgressToNextLevel = currentXP - calculateTotalXP(level);
     let progressBar = createProgressBar(xpProgressToNextLevel, xpForLevel, 10);
     
-    statusBar.text = `Lvl ${level}: ${progressBar}`;
+    statusBar.text = convertToSymbolString(`${level}:`) + `${progressBar}`;
 }
 
 function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
