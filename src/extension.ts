@@ -13,7 +13,6 @@ export function activate(context: vscode.ExtensionContext) {
     listenForDocumentSave(context);
     updateStatusBar(getXP(context)); //initialize status bar
     setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //set last save time to yesterday
-    setCurrentStreak(context, 1);
 }
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
@@ -37,32 +36,67 @@ function listenForShowInfoCommand(context: vscode.ExtensionContext) {
         let xpForLevel = calculateXPforLevel(level + 1);
         let currentXPProgress = totalXP - calculateTotalXP(level);
         getCurrentStreak(context) <= 1 ? splashText(context, [`${currentXPProgress}/${xpForLevel} XP`], 1500) :
-        splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`], 1500);
+        splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`, `Multiplier: ${calculateMultiplier(getCurrentStreak(context))}X`], 1500);
     }));
 }
 
 function listenForDocumentSave(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
-        let lastSaveTime = getLastSaveTime(context);
-        lastSaveTime = lastSaveTime ? new Date(lastSaveTime) : undefined;  //Restores to original format (date object)
-        setLastSaveTime(context); //sets the global to current time after retrieved
-        let oldXP = getXP(context);
-        let newXP = oldXP + getElapsedTimeInSeconds(lastSaveTime) + (isNewDay(lastSaveTime) ? 1000 : 0); //add elapsed XP and daily bonus
-        (isNewDay(lastSaveTime) ? splashText(context, ['Daily XP +1000']).then(() => animateProgressBar(oldXP, newXP), () => addStreak(context, lastSaveTime)) 
-        : Promise.resolve()).then(() => {
-            animateProgressBar(oldXP, newXP);
-        });
+        const lastSaveTime = getLastSaveTime(context);
+        const lastSaveDate = lastSaveTime ? new Date(lastSaveTime) : undefined; // Restores to original format (date object)
+        setLastSaveTime(context); // Sets the global to the current time after retrieved
+
+        // Calculate new XP and perform actions
+        const oldXP = getXP(context);
+        const newXP = oldXP + getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0); // Add elapsed XP and daily bonus
+
+        // Add streak and perform actions dependent on the streak
+        if (isNewDay(lastSaveDate)) {
+            addStreak(context, lastSaveDate);
+                if (getCurrentStreak(context) <= 1) {
+                    splashText(context, ['Daily XP +1000'], 1500).then(() => {
+                        animateProgressBar(oldXP, newXP);
+                    });
+                } else {
+                    splashText(context, [`Daily XP +1000`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
+                        animateProgressBar(oldXP, newXP);
+                    });
+                }
+        }
         setXP(context, newXP);
     }));
 }
 
+function calculateMultiplier(streak: number): number {
+    if(streak <= 1) {
+        return 1.0;
+    } else {
+        return 1.0 + streak * 0.05;
+    }
+}
+
 function addStreak(context: vscode.ExtensionContext, lastSaveTime: Date | undefined): void {
-    //checks if the last save time was yesterday, if so, increment streak, otherwise reset streak
+    const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    lastSaveTime && lastSaveTime.getDate() === yesterday.getDate()
-        && lastSaveTime.getMonth() === yesterday.getMonth()
-        && lastSaveTime.getFullYear() === yesterday.getFullYear() ? setCurrentStreak(context, getCurrentStreak(context) + 1) : setCurrentStreak(context, 1);
+    // Check if the last save time is today
+    if (lastSaveTime && isSameDate(lastSaveTime, today)) {
+        // Do nothing, leave the streak as is
+        return;
+    }
+    // Check if the last save time was yesterday
+    if (lastSaveTime && isSameDate(lastSaveTime, yesterday)) {
+        setCurrentStreak(context, getCurrentStreak(context) + 1); // Increment streak
+    } else {
+        setCurrentStreak(context, 1); // Reset streak
+    }
+}
+function isSameDate(date1: Date, date2: Date): boolean {
+    return (
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+    );
 }
 
 function getCurrentThemeTitle(): string | undefined{
