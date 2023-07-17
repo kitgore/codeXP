@@ -46,20 +46,22 @@ function listenForDocumentSave(context: vscode.ExtensionContext): void {
 
         // Calculate new XP and perform actions
         const oldXP = getXP(context);
-        const newXP = oldXP + getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0); // Add elapsed XP and daily bonus
+        const newXP = Math.floor(oldXP) + Math.floor((getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0)) * calculateMultiplier(getCurrentStreak(context))); // Add elapsed XP and daily bonus
 
         // Add streak and perform actions dependent on the streak
         if (isNewDay(lastSaveDate)) {
             addStreak(context, lastSaveDate);
                 if (getCurrentStreak(context) <= 1) {
-                    splashText(context, ['Daily XP +1000'], 1500).then(() => {
+                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
                         animateProgressBar(oldXP, newXP);
                     });
                 } else {
-                    splashText(context, [`Daily XP +1000`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
+                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
                         animateProgressBar(oldXP, newXP);
                     });
                 }
+        }else{
+            animateProgressBar(oldXP, newXP);
         }
         setXP(context, newXP);
     }));
