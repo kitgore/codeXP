@@ -28,9 +28,7 @@ function listenForXPAddCommand(context: vscode.ExtensionContext) {
 
 function listenForShowInfoCommand(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
-        if(hasThemeChanged(context)) {
-            updateTheme(context);
-        }
+        themeRefresh(context);
         let totalXP = getXP(context);
         let level = calculateLevel(totalXP);
         let xpForLevel = calculateXPforLevel(level + 1);
@@ -76,6 +74,13 @@ function calculateMultiplier(streak: number): number {
 }
 
 function addStreak(context: vscode.ExtensionContext, lastSaveTime: Date | undefined): void {
+    function isSameDate(date1: Date, date2: Date): boolean {
+        return (
+            date1.getDate() === date2.getDate() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getFullYear() === date2.getFullYear()
+        );
+    }
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -91,13 +96,6 @@ function addStreak(context: vscode.ExtensionContext, lastSaveTime: Date | undefi
         setCurrentStreak(context, 1); // Reset streak
     }
 }
-function isSameDate(date1: Date, date2: Date): boolean {
-    return (
-        date1.getDate() === date2.getDate() &&
-        date1.getMonth() === date2.getMonth() &&
-        date1.getFullYear() === date2.getFullYear()
-    );
-}
 
 function getCurrentThemeTitle(): string | undefined{
     return vscode.workspace.getConfiguration().get('workbench.colorTheme');
@@ -108,19 +106,16 @@ function cacheCurrentThemeTitle(context: vscode.ExtensionContext) {
     context.globalState.update('themeTitle', currentThemeTitle);
 }
 
-function hasThemeChanged(context: vscode.ExtensionContext): boolean {
-    //REFACTOR
+function themeRefresh(context: vscode.ExtensionContext): boolean {
     const cachedThemeTitle = context.globalState.get('themeTitle');
     const currentThemeTitle = getCurrentThemeTitle();
+    if(cachedThemeTitle !== currentThemeTitle){
+        cacheCurrentThemeTitle(context);
+        calculateStatusbarColor(context)
+            .then(rgb => setStatusbarColor(context, rgb))
+            .catch(error => vscode.window.showInformationMessage(error));
+    }
     return cachedThemeTitle !== currentThemeTitle;
-}
-
-function updateTheme(context: vscode.ExtensionContext) {
-    //REFACTOR
-    cacheCurrentThemeTitle(context);
-    calculateStatusbarColor(context)
-        .then(rgb => setStatusbarColor(context, rgb))
-        .catch(error => vscode.window.showInformationMessage(error));
 }
 
 async function setupStatusBar(context: vscode.ExtensionContext) {
@@ -129,9 +124,7 @@ async function setupStatusBar(context: vscode.ExtensionContext) {
     statusBar.command = 'codexp.showInfo';
     statusBar.show();
     context.subscriptions.push(statusBar);
-    if (hasThemeChanged(context)) {
-        updateTheme(context);
-    } else {
+    if (!themeRefresh(context)) {
         const rgb = getStatusbarColor(context);
         setStatusbarColor(context, rgb);
     }
@@ -174,7 +167,7 @@ function delay(ms: number): Promise<void> {
   }
 
 async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
-    const statusLength = 23;
+    const statusLength = 25;
     let oldText = statusBar.text;
     for (let i = 0; i < text.length; i++) {
         let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
@@ -275,12 +268,12 @@ function createProgressBar(current: number, total: number, barSize: number = 10)
     current = Math.min(Math.max(current, 0), total);
     let percentage = current / total;
     let progress = Math.floor(percentage * barSize);
-    let icons = ['progress-4', 'progress-5', 'progress-6', 'progress-7', 'progress-8', 'progress-9', 'progress-10', 'progress-11', 'progress-12', 'progress-14', 'progress-13'];
+    let icons = ['progress-3', 'progress-4', 'progress-5', 'progress-6', 'progress-7', 'progress-8', 'progress-9', 'progress-10', 'progress-11', 'progress-12'];
     let progressBar = '$(progress-beginning)'; // Initialize the progress bar with the beginning icon.
     
     // Adds full progress icons to the progressBar.
     for (let i = 0; i < progress; i++) {
-        progressBar += `$(progress-15)`;
+        progressBar += `$(progress-13)`;
     }
     
     if (progress < barSize) {
@@ -288,23 +281,13 @@ function createProgressBar(current: number, total: number, barSize: number = 10)
         let iconIndex = Math.floor(fraction * (icons.length - 1));
         progressBar += `$(${icons[iconIndex]})`;
         // Check if icon runs over into the next icon
-        if (iconIndex === icons.length - 2 || iconIndex === icons.length - 3) {
+        if (iconIndex === icons.length - 1) {
             if (progress === barSize - 1) {
-                if(iconIndex === icons.length - 3) {
-                    progressBar += `$(progress-end-2)`;
-                }
-                else if(iconIndex === icons.length - 2) {
-                    progressBar += `$(progress-end-3)`;
-                }
+                progressBar += `$(progress-end-2)`;
                 return progressBar;
             }
             else{
-                if(iconIndex === icons.length - 3) {
-                    progressBar += '$(progress-1)';
-                }
-                if(iconIndex === icons.length - 2) {
-                    progressBar += '$(progress-3)';
-                }
+                progressBar += '$(progress-3)';
                 progress++;
             }
         }
@@ -339,6 +322,7 @@ function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
             updateStatusBar(currentXP);
         }, i * delay);
     }
+    updateStatusBar(newXP);
 }
 
 //getStatusBar helper functions
