@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <script nonce="${nonce}">
+        const vscode = acquireVsCodeApi();
+        vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
+            (rv) => {
+                return {
+                    [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
+                }
+            }
+        ));
+    </script>
+</body>
+</html>

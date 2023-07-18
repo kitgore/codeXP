@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": ["*"],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -38,803 +40,802 @@
       "progress-beginning": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\61"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\61"
         }
       },
       "progress-1": {
-          "description": "progress icon 1",
-          "default": {
-              "fontPath": "./theme/icomoon.woff",
-              "fontCharacter": "\\62"
-          }
-        },
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\62"
+        }
+      },
       "progress-2": {
-          "description": "progress icon 1",
-          "default": {
-              "fontPath": "./theme/icomoon.woff",
-              "fontCharacter": "\\63"
-          }
-    },
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\63"
+        }
+      },
       "progress-3": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\64"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\64"
         }
       },
       "progress-4": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\65"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\65"
         }
-    },
-    "progress-5": {
-      "description": "progress icon 1",
-      "default": {
+      },
+      "progress-5": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\66"
-      }
-    },
-  "progress-6": {
-      "description": "progress icon 1",
-      "default": {
+        }
+      },
+      "progress-6": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\67"
-      }
-},
+        }
+      },
       "progress-7": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\68"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\68"
         }
       },
       "progress-8": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\69"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\69"
         }
-    },
-    "progress-9": {
-      "description": "progress icon 1",
-      "default": {
+      },
+      "progress-9": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\6a"
-      }
-  },
-  "progress-10": {
-    "description": "progress icon 1",
-    "default": {
-        "fontPath": "./theme/icomoon.woff",
-        "fontCharacter": "\\6b"
-    }
-},
-    "progress-11": {
-      "description": "progress icon 1",
-      "default": {
+        }
+      },
+      "progress-10": {
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6b"
+        }
+      },
+      "progress-11": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\6c"
-      }
-    },
-    "progress-12": {
-      "description": "progress icon 1",
-      "default": {
+        }
+      },
+      "progress-12": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\6d"
-      }
-  },
+        }
+      },
       "progress-13": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\6e"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6e"
         }
       },
       "progress-14": {
         "description": "progress icon 1",
         "default": {
-            "fontPath": "./theme/icomoon.woff",
-            "fontCharacter": "\\6f"
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\6f"
         }
-    },
-        "progress-15": {
-          "description": "progress icon 1",
-          "default": {
-              "fontPath": "./theme/icomoon.woff",
-              "fontCharacter": "\\70"
-          }
-        },
-        
-    "progress-end-1": {
-    "description": "progress icon 1",
-    "default": {
-        "fontPath": "./theme/icomoon.woff",
-        "fontCharacter": "\\71"
-    }
-    },
-    "progress-end-2": {
-      "description": "progress icon 1",
-      "default": {
+      },
+      "progress-15": {
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\70"
+        }
+      },
+      "progress-end-1": {
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\71"
+        }
+      },
+      "progress-end-2": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\72"
-      }
-    },
-    "progress-end-3": {
-    "description": "progress icon 1",
-    "default": {
-        "fontPath": "./theme/icomoon.woff",
-        "fontCharacter": "\\73"
-    }
-    },
-    "progress-end-4": {
-      "description": "progress icon 1",
-      "default": {
+        }
+      },
+      "progress-end-3": {
+        "description": "progress icon 1",
+        "default": {
+          "fontPath": "./theme/icomoon.woff",
+          "fontCharacter": "\\73"
+        }
+      },
+      "progress-end-4": {
+        "description": "progress icon 1",
+        "default": {
           "fontPath": "./theme/icomoon.woff",
           "fontCharacter": "\\74"
-      }
-    },
-    "sm-double-quote": {
-      "description": "Double quote icon",
-      "default": {
+        }
+      },
+      "sm-double-quote": {
+        "description": "Double quote icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\22"
-      }
-  },
-  "sm-hash": {
-      "description": "Hash icon",
-      "default": {
+        }
+      },
+      "sm-hash": {
+        "description": "Hash icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\23"
-      }
-  },
-  "sm-dollar": {
-      "description": "Dollar icon",
-      "default": {
+        }
+      },
+      "sm-dollar": {
+        "description": "Dollar icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\24"
-      }
-  },
-  "sm-percent": {
-      "description": "Percent icon",
-      "default": {
+        }
+      },
+      "sm-percent": {
+        "description": "Percent icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\25"
-      }
-  },
-  "sm-ampersand": {
-      "description": "Ampersand icon",
-      "default": {
+        }
+      },
+      "sm-ampersand": {
+        "description": "Ampersand icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\26"
-      }
-  },
-  "sm-single-quote": {
-      "description": "Single quote icon",
-      "default": {
+        }
+      },
+      "sm-single-quote": {
+        "description": "Single quote icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\27"
-      }
-  },
-  "sm-open-parenthesis": {
-      "description": "Left parenthesis icon",
-      "default": {
+        }
+      },
+      "sm-open-parenthesis": {
+        "description": "Left parenthesis icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\28"
-      }
-  },
-  "sm-close-parenthesis": {
-      "description": "Right parenthesis icon",
-      "default": {
+        }
+      },
+      "sm-close-parenthesis": {
+        "description": "Right parenthesis icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\29"
-      }
-  },
-  "sm-asterisk": {
-      "description": "Asterisk icon",
-      "default": {
+        }
+      },
+      "sm-asterisk": {
+        "description": "Asterisk icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2a"
-      }
-  },
-  "sm-plus": {
-      "description": "Plus icon",
-      "default": {
+        }
+      },
+      "sm-plus": {
+        "description": "Plus icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2b"
-      }
-  },
-  "sm-comma": {
-      "description": "Comma icon",
-      "default": {
+        }
+      },
+      "sm-comma": {
+        "description": "Comma icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2c"
-      }
-  },
-  "sm-minus": {
-      "description": "Minus icon",
-      "default": {
+        }
+      },
+      "sm-minus": {
+        "description": "Minus icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2d"
-      }
-  },
-  "sm-period": {
-      "description": "Period icon",
-      "default": {
+        }
+      },
+      "sm-period": {
+        "description": "Period icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2e"
-      }
-  },
-  "sm-slash": {
-      "description": "Slash icon",
-      "default": {
+        }
+      },
+      "sm-slash": {
+        "description": "Slash icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\2f"
-      }
-  },
-  "sm-0": {
-      "description": "Zero icon",
-      "default": {
+        }
+      },
+      "sm-0": {
+        "description": "Zero icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\30"
-      }
-  },
-  "sm-1": {
-      "description": "One icon",
-      "default": {
+        }
+      },
+      "sm-1": {
+        "description": "One icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\31"
-      }
-  },
-  "sm-2": {
-      "description": "Two icon",
-      "default": {
+        }
+      },
+      "sm-2": {
+        "description": "Two icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\32"
-      }
-  },
-  "sm-3": {
-      "description": "Three icon",
-      "default": {
+        }
+      },
+      "sm-3": {
+        "description": "Three icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\33"
-      }
-  },
-  "sm-4": {
-      "description": "Four icon",
-      "default": {
+        }
+      },
+      "sm-4": {
+        "description": "Four icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\34"
-      }
-  },
-  "sm-5": {
-      "description": "Five icon",
-      "default": {
+        }
+      },
+      "sm-5": {
+        "description": "Five icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\35"
-      }
-  },
-  "sm-6": {
-      "description": "Six icon",
-      "default": {
+        }
+      },
+      "sm-6": {
+        "description": "Six icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\36"
-      }
-  },
-  "sm-7": {
-      "description": "Seven icon",
-      "default": {
+        }
+      },
+      "sm-7": {
+        "description": "Seven icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\37"
-      }
-  },
-  "sm-8": {
-      "description": "Eight icon",
-      "default": {
+        }
+      },
+      "sm-8": {
+        "description": "Eight icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\38"
-      }
-  },
-  "sm-9": {
-      "description": "Nine icon",
-      "default": {
+        }
+      },
+      "sm-9": {
+        "description": "Nine icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\39"
-      }
-  },
-  "sm-colon": {
-      "description": "Colon icon",
-      "default": {
+        }
+      },
+      "sm-colon": {
+        "description": "Colon icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3a"
-      }
-  },
-  "sm-semicolon": {
-      "description": "Semicolon icon",
-      "default": {
+        }
+      },
+      "sm-semicolon": {
+        "description": "Semicolon icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3b"
-      }
-  },
-  "sm-less-than": {
-      "description": "Less than icon",
-      "default": {
+        }
+      },
+      "sm-less-than": {
+        "description": "Less than icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3c"
-      }
-  },
-  "sm-equals": {
-      "description": "Equals icon",
-      "default": {
+        }
+      },
+      "sm-equals": {
+        "description": "Equals icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3d"
-      }
-  },
-  "sm-greater-than": {
-      "description": "Greater than icon",
-      "default": {
+        }
+      },
+      "sm-greater-than": {
+        "description": "Greater than icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3e"
-      }
-  },
-  "sm-question-mark": {
-      "description": "Question mark icon",
-      "default": {
+        }
+      },
+      "sm-question-mark": {
+        "description": "Question mark icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\3f"
-      }
-  },
-  "sm-at": {
-      "description": "At icon",
-      "default": {
+        }
+      },
+      "sm-at": {
+        "description": "At icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\40"
-      }
-  },
-  "sm-A": {
-      "description": "Capital letter A icon",
-      "default": {
+        }
+      },
+      "sm-A": {
+        "description": "Capital letter A icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\41"
-      }
-  },
-  "sm-B": {
-      "description": "Capital letter B icon",
-      "default": {
+        }
+      },
+      "sm-B": {
+        "description": "Capital letter B icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\42"
-      }
-  },
-  "sm-C": {
-      "description": "Capital letter C icon",
-      "default": {
+        }
+      },
+      "sm-C": {
+        "description": "Capital letter C icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\43"
-      }
-  },
-  "sm-D": {
-      "description": "Capital letter D icon",
-      "default": {
+        }
+      },
+      "sm-D": {
+        "description": "Capital letter D icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\44"
-      }
-  },
-  "sm-E": {
-      "description": "Capital letter E icon",
-      "default": {
+        }
+      },
+      "sm-E": {
+        "description": "Capital letter E icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\45"
-      }
-  },
-  "sm-F": {
-      "description": "Capital letter F icon",
-      "default": {
+        }
+      },
+      "sm-F": {
+        "description": "Capital letter F icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\46"
-      }
-  },
-  "sm-G": {
-      "description": "Capital letter G icon",
-      "default": {
+        }
+      },
+      "sm-G": {
+        "description": "Capital letter G icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\47"
-      }
-  },
-  "sm-H": {
-      "description": "Capital letter H icon",
-      "default": {
+        }
+      },
+      "sm-H": {
+        "description": "Capital letter H icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\48"
-      }
-  },
-  "sm-I": {
-      "description": "Capital letter I icon",
-      "default": {
+        }
+      },
+      "sm-I": {
+        "description": "Capital letter I icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\49"
-      }
-  },
-  "sm-J": {
-      "description": "Capital letter J icon",
-      "default": {
+        }
+      },
+      "sm-J": {
+        "description": "Capital letter J icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4a"
-      }
-  },
-  "sm-K": {
-      "description": "Capital letter K icon",
-      "default": {
+        }
+      },
+      "sm-K": {
+        "description": "Capital letter K icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4b"
-      }
-  },
-  "sm-L": {
-      "description": "Capital letter L icon",
-      "default": {
+        }
+      },
+      "sm-L": {
+        "description": "Capital letter L icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4c"
-      }
-  },
-  "sm-M": {
-      "description": "Capital letter M icon",
-      "default": {
+        }
+      },
+      "sm-M": {
+        "description": "Capital letter M icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4d"
-      }
-  },
-  "sm-N": {
-      "description": "Capital letter N icon",
-      "default": {
+        }
+      },
+      "sm-N": {
+        "description": "Capital letter N icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4e"
-      }
-  },
-  "sm-O": {
-      "description": "Capital letter O icon",
-      "default": {
+        }
+      },
+      "sm-O": {
+        "description": "Capital letter O icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\4f"
-      }
-  },
-  "sm-P": {
-      "description": "Capital letter P icon",
-      "default": {
+        }
+      },
+      "sm-P": {
+        "description": "Capital letter P icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\50"
-      }
-  },
-  "sm-Q": {
-      "description": "Capital letter Q icon",
-      "default": {
+        }
+      },
+      "sm-Q": {
+        "description": "Capital letter Q icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\51"
-      }
-  },
-  "sm-R": {
-      "description": "Capital letter R icon",
-      "default": {
+        }
+      },
+      "sm-R": {
+        "description": "Capital letter R icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\52"
-      }
-  },
-  "sm-S": {
-      "description": "Capital letter S icon",
-      "default": {
+        }
+      },
+      "sm-S": {
+        "description": "Capital letter S icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\53"
-      }
-  },
-  "sm-T": {
-      "description": "Capital letter T icon",
-      "default": {
+        }
+      },
+      "sm-T": {
+        "description": "Capital letter T icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\54"
-      }
-  },
-  "sm-U": {
-      "description": "Capital letter U icon",
-      "default": {
+        }
+      },
+      "sm-U": {
+        "description": "Capital letter U icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\55"
-      }
-  },
-  "sm-V": {
-      "description": "Capital letter V icon",
-      "default": {
+        }
+      },
+      "sm-V": {
+        "description": "Capital letter V icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\56"
-      }
-  },
-  "sm-W": {
-      "description": "Capital letter W icon",
-      "default": {
+        }
+      },
+      "sm-W": {
+        "description": "Capital letter W icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\57"
-      }
-  },
-  "sm-X": {
-      "description": "Capital letter X icon",
-      "default": {
+        }
+      },
+      "sm-X": {
+        "description": "Capital letter X icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\58"
-      }
-  },
-  "sm-Y": {
-      "description": "Capital letter Y icon",
-      "default": {
+        }
+      },
+      "sm-Y": {
+        "description": "Capital letter Y icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\59"
-      }
-  },
-  "sm-Z": {
-      "description": "Capital letter Z icon",
-      "default": {
+        }
+      },
+      "sm-Z": {
+        "description": "Capital letter Z icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5a"
-      }
-  },
-  "sm-open-bracket": {
-      "description": "Open bracket icon",
-      "default": {
+        }
+      },
+      "sm-open-bracket": {
+        "description": "Open bracket icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5b"
-      }
-  },
-  "sm-backslash": {
-      "description": "Backslash icon",
-      "default": {
+        }
+      },
+      "sm-backslash": {
+        "description": "Backslash icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5c"
-      }
-  },
-  "sm-close-bracket": {
-      "description": "Close bracket icon",
-      "default": {
+        }
+      },
+      "sm-close-bracket": {
+        "description": "Close bracket icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5d"
-      }
-  },
-  "sm-caret": {
-      "description": "Caret icon",
-      "default": {
+        }
+      },
+      "sm-caret": {
+        "description": "Caret icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5e"
-      }
-  },
-  "sm-underscore": {
-      "description": "Underscore icon",
-      "default": {
+        }
+      },
+      "sm-underscore": {
+        "description": "Underscore icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\5f"
-      }
-  },
-  "sm-grave-accent": {
-      "description": "Grave accent icon",
-      "default": {
+        }
+      },
+      "sm-grave-accent": {
+        "description": "Grave accent icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\60"
-      }
-  },
-  "sm-a": {
-      "description": "Lowercase letter a icon",
-      "default": {
+        }
+      },
+      "sm-a": {
+        "description": "Lowercase letter a icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\61"
-      }
-  },
-  "sm-b": {
-      "description": "Lowercase letter b icon",
-      "default": {
+        }
+      },
+      "sm-b": {
+        "description": "Lowercase letter b icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\62"
-      }
-  },
-  "sm-c": {
-      "description": "Lowercase letter c icon",
-      "default": {
+        }
+      },
+      "sm-c": {
+        "description": "Lowercase letter c icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\63"
-      }
-  },
-  "sm-d": {
-      "description": "Lowercase letter d icon",
-      "default": {
+        }
+      },
+      "sm-d": {
+        "description": "Lowercase letter d icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\64"
-      }
-  },
-  "sm-e": {
-      "description": "Lowercase letter e icon",
-      "default": {
+        }
+      },
+      "sm-e": {
+        "description": "Lowercase letter e icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\65"
-      }
-  },
-  "sm-f": {
-      "description": "Lowercase letter f icon",
-      "default": {
+        }
+      },
+      "sm-f": {
+        "description": "Lowercase letter f icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\66"
-      }
-  },
-  "sm-g": {
-      "description": "Lowercase letter g icon",
-      "default": {
+        }
+      },
+      "sm-g": {
+        "description": "Lowercase letter g icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\67"
-      }
-  },
-  "sm-h": {
-      "description": "Lowercase letter h icon",
-      "default": {
+        }
+      },
+      "sm-h": {
+        "description": "Lowercase letter h icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\68"
-      }
-  },
-  "sm-i": {
-      "description": "Lowercase letter i icon",
-      "default": {
+        }
+      },
+      "sm-i": {
+        "description": "Lowercase letter i icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\69"
-      }
-  },
-  "sm-j": {
-      "description": "Lowercase letter j icon",
-      "default": {
+        }
+      },
+      "sm-j": {
+        "description": "Lowercase letter j icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6a"
-      }
-  },
-  "sm-k": {
-      "description": "Lowercase letter k icon",
-      "default": {
+        }
+      },
+      "sm-k": {
+        "description": "Lowercase letter k icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6b"
-      }
-  },
-  "sm-l": {
-      "description": "Lowercase letter l icon",
-      "default": {
+        }
+      },
+      "sm-l": {
+        "description": "Lowercase letter l icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6c"
-      }
-  },
-  "sm-m": {
-      "description": "Lowercase letter m icon",
-      "default": {
+        }
+      },
+      "sm-m": {
+        "description": "Lowercase letter m icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6d"
-      }
-  },
-  "sm-n": {
-      "description": "Lowercase letter n icon",
-      "default": {
+        }
+      },
+      "sm-n": {
+        "description": "Lowercase letter n icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6e"
-      }
-  },
-  "sm-o": {
-      "description": "Lowercase letter o icon",
-      "default": {
+        }
+      },
+      "sm-o": {
+        "description": "Lowercase letter o icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\6f"
-      }
-  },
-  "sm-p": {
-      "description": "Lowercase letter p icon",
-      "default": {
+        }
+      },
+      "sm-p": {
+        "description": "Lowercase letter p icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\70"
-      }
-  },
-  "sm-q": {
-      "description": "Lowercase letter q icon",
-      "default": {
+        }
+      },
+      "sm-q": {
+        "description": "Lowercase letter q icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\71"
-      }
-  },
-  "sm-r": {
-      "description": "Lowercase letter r icon",
-      "default": {
+        }
+      },
+      "sm-r": {
+        "description": "Lowercase letter r icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\72"
-      }
-  },
-  "sm-s": {
-      "description": "Lowercase letter s icon",
-      "default": {
+        }
+      },
+      "sm-s": {
+        "description": "Lowercase letter s icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\73"
-      }
-  },
-  "sm-t": {
-      "description": "Lowercase letter t icon",
-      "default": {
+        }
+      },
+      "sm-t": {
+        "description": "Lowercase letter t icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\74"
-      }
-  },
-  "sm-u": {
-      "description": "Lowercase letter u icon",
-      "default": {
+        }
+      },
+      "sm-u": {
+        "description": "Lowercase letter u icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\75"
-      }
-  },
-  "sm-v": {
-      "description": "Lowercase letter v icon",
-      "default": {
+        }
+      },
+      "sm-v": {
+        "description": "Lowercase letter v icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\76"
-      }
-  },
-  "sm-w": {
-      "description": "Lowercase letter w icon",
-      "default": {
+        }
+      },
+      "sm-w": {
+        "description": "Lowercase letter w icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\77"
-      }
-  },
-  "sm-x": {
-      "description": "Lowercase letter x icon",
-      "default": {
+        }
+      },
+      "sm-x": {
+        "description": "Lowercase letter x icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\78"
-      }
-  },
-  "sm-y": {
-      "description": "Lowercase letter y icon",
-      "default": {
+        }
+      },
+      "sm-y": {
+        "description": "Lowercase letter y icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\79"
-      }
-  },
-  "sm-z": {
-      "description": "Lowercase letter z icon",
-      "default": {
+        }
+      },
+      "sm-z": {
+        "description": "Lowercase letter z icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\7a"
-      }
-  },
-  "sm-open-brace": {
-      "description": "Open brace icon",
-      "default": {
+        }
+      },
+      "sm-open-brace": {
+        "description": "Open brace icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\7b"
-      }
-  },
-  "sm-vertical-bar": {
-      "description": "Vertical bar icon",
-      "default": {
+        }
+      },
+      "sm-vertical-bar": {
+        "description": "Vertical bar icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\7c"
-      }
-  },
-  "sm-close-brace": {
-      "description": "Close brace icon",
-      "default": {
+        }
+      },
+      "sm-close-brace": {
+        "description": "Close brace icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\7d"
-      }
-  },
-  "sm-tilde": {
-      "description": "Tilde icon",
-      "default": {
+        }
+      },
+      "sm-tilde": {
+        "description": "Tilde icon",
+        "default": {
           "fontPath": "./theme/RobotoMono.woff",
           "fontCharacter": "\\7e"
+        }
+      },
+      "sm-space": {
+        "description": "Space icon",
+        "default": {
+          "fontPath": "./theme/RobotoMono.woff",
+          "fontCharacter": "\\a0"
+        }
       }
-  },
-  "sm-space": {
-    "description": "Space icon",
-    "default": {
-        "fontPath": "./theme/RobotoMono.woff",
-        "fontCharacter": "\\a0"
     }
-}
-  }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -848,19 +849,23 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.79.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.79.0",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
+    "@vscode/test-electron": "^2.3.0",
     "eslint": "^8.39.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.0.4",
     "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
     "webpack": "^5.81.0",
-    "webpack-cli": "^5.0.2",
-    "@vscode/test-electron": "^2.3.0"
+    "webpack-cli": "^5.0.2"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }

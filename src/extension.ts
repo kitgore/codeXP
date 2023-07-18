@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as vscode from 'vscode';
 let statusBar: vscode.StatusBarItem;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
@@ -11,8 +13,16 @@ export function activate(context: vscode.ExtensionContext) {
     listenForXPAddCommand(context);
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
+    listenForThemeChange(context);
     updateStatusBar(getXP(context)); //initialize status bar
     setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //set last save time to yesterday
+}
+
+function listenForThemeChange(context: vscode.ExtensionContext) {
+    context.subscriptions.push(vscode.window.onDidChangeActiveColorTheme(() => {
+        context.globalState.update('themeChangeFlag',true);
+        console.log("BRUHHHHHHHHHHHHHHHHHHHHHHH");
+    }));
 }
 
 function listenForXPAddCommand(context: vscode.ExtensionContext) {
@@ -28,74 +38,56 @@ function listenForXPAddCommand(context: vscode.ExtensionContext) {
 
 function listenForShowInfoCommand(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('codexp.showInfo', () => {
-        themeRefresh(context);
         let totalXP = getXP(context);
         let level = calculateLevel(totalXP);
         let xpForLevel = calculateXPforLevel(level + 1);
         let currentXPProgress = totalXP - calculateTotalXP(level);
-        getCurrentStreak(context) <= 1 ? splashText(context, [`${currentXPProgress}/${xpForLevel} XP`], 1500) :
-        splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`, `Multiplier: ${calculateMultiplier(getCurrentStreak(context))}X`], 1500);
+        getCurrentStreak(context) <= 1 ? 
+            splashText(context, [`${currentXPProgress}/${xpForLevel} XP`], 1500) 
+            : splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`, `Multiplier: ${calculateMultiplier(getCurrentStreak(context))}X`], 1500);
     }));
 }
 
 function listenForDocumentSave(context: vscode.ExtensionContext): void {
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
+        if(context.globalState.get<boolean>('themeChangeFlag') === true){
+            context.globalState.update('themeChangeFlag', false);
+            themeRefresh(context);
+        }
         const lastSaveTime = getLastSaveTime(context);
         const lastSaveDate = lastSaveTime ? new Date(lastSaveTime) : undefined; // Restores to original format (date object)
         setLastSaveTime(context); // Sets the global to the current time after retrieved
-
-        // Calculate new XP and perform actions
         const oldXP = getXP(context);
         const newXP = Math.floor(oldXP) + Math.floor((getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0)) * calculateMultiplier(getCurrentStreak(context))); // Add elapsed XP and daily bonus
 
-        // Add streak and perform actions dependent on the streak
-        if (isNewDay(lastSaveDate)) {
-            addStreak(context, lastSaveDate);
-                if (getCurrentStreak(context) <= 1) {
-                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
-                        animateProgressBar(oldXP, newXP);
-                    });
-                } else {
-                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
-                        animateProgressBar(oldXP, newXP);
-                    });
-                }
-        }else{
-            animateProgressBar(oldXP, newXP);
-        }
-        setXP(context, newXP);
+        isNewDay(lastSaveDate) ? // Show splash based on streak
+            (addStreak(context, lastSaveDate),
+            getCurrentStreak(context) <= 1 ?
+                splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
+                    animateProgressBar(oldXP, newXP);})
+                :splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
+                    animateProgressBar(oldXP, newXP);}))
+            : animateProgressBar(oldXP, newXP);
+            setXP(context, newXP);
     }));
 }
 
 function calculateMultiplier(streak: number): number {
-    if(streak <= 1) {
-        return 1.0;
-    } else {
-        return 1.0 + streak * 0.05;
-    }
+    const multiplier = streak <= 1 ? 1.0 : 1.0 + streak * 0.05;
+    return parseFloat(multiplier.toFixed(2));
 }
 
 function addStreak(context: vscode.ExtensionContext, lastSaveTime: Date | undefined): void {
     function isSameDate(date1: Date, date2: Date): boolean {
-        return (
-            date1.getDate() === date2.getDate() &&
-            date1.getMonth() === date2.getMonth() &&
-            date1.getFullYear() === date2.getFullYear()
-        );
+        return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear()
     }
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    // Check if the last save time is today
-    if (lastSaveTime && isSameDate(lastSaveTime, today)) {
-        // Do nothing, leave the streak as is
-        return;
-    }
-    // Check if the last save time was yesterday
-    if (lastSaveTime && isSameDate(lastSaveTime, yesterday)) {
-        setCurrentStreak(context, getCurrentStreak(context) + 1); // Increment streak
-    } else {
-        setCurrentStreak(context, 1); // Reset streak
+    if (lastSaveTime && !isSameDate(lastSaveTime, today)) {
+        lastSaveTime && isSameDate(lastSaveTime, yesterday) ?
+        setCurrentStreak(context, getCurrentStreak(context) + 1) // Increment streak
+        : setCurrentStreak(context, 1); // Reset streak
     }
 }
 
@@ -108,50 +100,35 @@ function cacheCurrentThemeTitle(context: vscode.ExtensionContext) {
     context.globalState.update('themeTitle', currentThemeTitle);
 }
 
-function themeRefresh(context: vscode.ExtensionContext): boolean {
-    const cachedThemeTitle = context.globalState.get('themeTitle');
-    const currentThemeTitle = getCurrentThemeTitle();
-    if(cachedThemeTitle !== currentThemeTitle){
-        cacheCurrentThemeTitle(context);
-        calculateStatusbarColor(context)
-            .then(rgb => setStatusbarColor(context, rgb))
-            .catch(error => vscode.window.showInformationMessage(error));
-    }
-    return cachedThemeTitle !== currentThemeTitle;
+function themeRefresh(context: vscode.ExtensionContext): void {
+    cacheCurrentThemeTitle(context);
+    calculateStatusbarColor(context)
+        .then(rgb => setStatusbarColor(context, rgb))
+        .catch(error => vscode.window.showInformationMessage(error));
 }
 
 async function setupStatusBar(context: vscode.ExtensionContext) {
-    //REFACTOR
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
     statusBar.command = 'codexp.showInfo';
     statusBar.show();
     context.subscriptions.push(statusBar);
-    if (!themeRefresh(context)) {
-        const rgb = getStatusbarColor(context);
-        setStatusbarColor(context, rgb);
-    }
+    context.globalState.get('themeTitle') !== getCurrentThemeTitle() ?
+        themeRefresh(context)
+        : setStatusbarColor(context, getStatusbarColor(context));
 }
 
 function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | { r: 255, g: 255, b: 255 }> {
     //hacky way to retrieve theme color by creating a webview and reading its style
     return new Promise((resolve, reject) => {
         const panel = vscode.window.createWebviewPanel(
-            'themeInfo', 
-            'Theme Information', 
-            vscode.ViewColumn.Beside,
-            { enableScripts: true }
-        );
+            'themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebViewContent();
         panel.webview.onDidReceiveMessage(message => {
             for (let obj of message) {
                 const key = Object.keys(obj)[0];
                 if (key === '--vscode-statusBar-foreground') {
-                    const rgb = hexToRgb(obj[key]);
-                    if (rgb) {
-                        resolve(rgb);
-                    } else {
-                        reject();
-                    }
+                    const rgb = hexToRgb(obj[key]); 
+                    rgb ? resolve(rgb) : reject();
                     panel.dispose();
                     return;
                 }
@@ -171,6 +148,7 @@ function delay(ms: number): Promise<void> {
 async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
     const statusLength = 25;
     let oldText = statusBar.text;
+    console.log(text.toString());
     for (let i = 0; i < text.length; i++) {
         let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
         await fadeStatusBar(context);
@@ -338,28 +316,15 @@ function hexToRgb(hex: string): {r: number, g: number, b: number}{
 }
 function getWebViewContent() {
     const nonce = getNonce();
-    return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}';">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <script nonce="${nonce}">
-            const vscode = acquireVsCodeApi();
-            vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
-                (rv) => {
-                    return {
-                        [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
-                    }
-                }
-            ));
-        </script>
-    </body>
-    </html>`;
+
+    let htmlPath = path.resolve(__dirname, '../src/themeWebview.html');
+    console.log(htmlPath);
+    let htmlContent = fs.readFileSync(htmlPath, 'utf8');
+    console.log(htmlContent);
+
+    return htmlContent.replace(/\$\{nonce\}/g, nonce);
 }
+
 function getNonce() {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -490,8 +455,3 @@ function convertToSymbolString(input: string): string {
 //use this to create webview
 //https://code.visualstudio.com/api/extension-guides/webview
 
-// function listenForThemeChange(context: vscode.ExtensionContext) {
-//     context.subscriptions.push(vscode.window.onDidChangeActiveColorTheme(() => {
-//         createWebView(context);
-//     }));
-// }
