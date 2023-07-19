@@ -14,25 +14,36 @@ export function activate(context: vscode.ExtensionContext) {
     listenForXPAddCommand(context);
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
+    listenForXPSetCommand(context);
     listenForThemeChange(context);
     updateStatusBar(getXP(context)); //initialize status bar
-    setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //set last save time to yesterday
+    setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //REMOVE BEFORE PROD
 }
 
 function listenForThemeChange(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.window.onDidChangeActiveColorTheme(() => {
         context.globalState.update('themeChangeFlag',true);
-        console.log("BRUHHHHHHHHHHHHHHHHHHHHHHH");
     }));
 }
 
-function listenForXPAddCommand(context: vscode.ExtensionContext) {
+function listenForXPAddCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
     context.subscriptions.push(vscode.commands.registerCommand('codexp.addXP', async () => {
         let xpToAdd = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to add:' });
         if (xpToAdd !== undefined) {
             let newXP = getXP(context) + parseInt(xpToAdd);
             animateProgressBar(getXP(context), newXP);
             setXP(context, newXP);
+        }
+    }));
+}
+
+function listenForXPSetCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
+    context.subscriptions.push(vscode.commands.registerCommand('codexp.setXP', async () => {
+        let xpToSet = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to set:' });
+        if (xpToSet !== undefined) {
+            let newXP = parseInt(xpToSet);
+            setXP(context, newXP);
+            updateStatusBar(newXP);
         }
     }));
 }
@@ -50,26 +61,29 @@ function listenForShowInfoCommand(context: vscode.ExtensionContext) {
 }
 
 function listenForDocumentSave(context: vscode.ExtensionContext): void {
+    //either updates theme or adds XP based on flag
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
         if(context.globalState.get<boolean>('themeChangeFlag') === true){
             context.globalState.update('themeChangeFlag', false);
             themeRefresh(context);
         }
-        const lastSaveTime = getLastSaveTime(context);
-        const lastSaveDate = lastSaveTime ? new Date(lastSaveTime) : undefined; // Restores to original format (date object)
-        setLastSaveTime(context); // Sets the global to the current time after retrieved
-        const oldXP = getXP(context);
-        const newXP = Math.floor(oldXP) + Math.floor((getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0)) * calculateMultiplier(getCurrentStreak(context))); // Add elapsed XP and daily bonus
+        else{
+            const lastSaveTime = getLastSaveTime(context);
+            const lastSaveDate = lastSaveTime ? new Date(lastSaveTime) : undefined; // Restores to original format (date object)
+            setLastSaveTime(context); // Sets the global to the current time after retrieved
+            const oldXP = getXP(context);
+            const newXP = Math.floor(oldXP) + Math.floor((getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0)) * calculateMultiplier(getCurrentStreak(context))); // Add elapsed XP and daily bonus
 
-        isNewDay(lastSaveDate) ? // Show splash based on streak
-            (addStreak(context, lastSaveDate),
-            getCurrentStreak(context) <= 1 ?
-                splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
-                    animateProgressBar(oldXP, newXP);})
-                :splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
-                    animateProgressBar(oldXP, newXP);}))
-            : animateProgressBar(oldXP, newXP);
-            setXP(context, newXP);
+            isNewDay(lastSaveDate) ? // Show splash based on streak
+                (addStreak(context, lastSaveDate),
+                getCurrentStreak(context) <= 1 ?
+                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
+                        animateProgressBar(oldXP, newXP);})
+                    :splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
+                        animateProgressBar(oldXP, newXP);}))
+                : animateProgressBar(oldXP, newXP);
+                setXP(context, newXP);
+        }
     }));
 }
 
@@ -119,10 +133,10 @@ async function setupStatusBar(context: vscode.ExtensionContext) {
 }
 
 function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | { r: 255, g: 255, b: 255 }> {
-    //hacky way to retrieve theme color by creating a webview and reading its style
+    //hacky way to retrieve theme color by creating a webview and reading its style by @AllanOricil 
+    //https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
     return new Promise((resolve, reject) => {
-        const panel = vscode.window.createWebviewPanel(
-            'themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
+        const panel = vscode.window.createWebviewPanel('themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebViewContent();
         panel.webview.onDidReceiveMessage(message => {
             for (let obj of message) {
@@ -149,7 +163,6 @@ function delay(ms: number): Promise<void> {
 async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
     const statusLength = 25;
     let oldText = statusBar.text;
-    console.log(text.toString());
     for (let i = 0; i < text.length; i++) {
         let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
         await fadeStatusBar(context);
@@ -285,25 +298,49 @@ function updateStatusBar(currentXP: number) {
     let xpForLevel = calculateXPforLevel(level + 1);
     let xpProgressToNextLevel = currentXP - calculateTotalXP(level);
     let progressBar = createProgressBar(xpProgressToNextLevel, xpForLevel, 10);
-    
     statusBar.text = convertToSymbolString(`${level}:`) + `${progressBar}`;
 }
 
-function animateProgressBar(oldXP: number, newXP: number, steps: number = 100) {
-    steps = (newXP - oldXP) / 17; 
+function calculateTotalPercentage(oldXP: number, newXP: number): number {
+    //calculate the total animations steps between oldXP and newXP
+    let oldLevel = calculateLevel(oldXP);
+    let newLevel = calculateLevel(newXP);
+    let oldXPforLevel = calculateXPforLevel(oldLevel + 1);
+    let newXPforLevel = calculateXPforLevel(newLevel + 1);
+    let oldXPProgressToNextLevel = oldXP - calculateTotalXP(oldLevel);
+    let newXPProgressToNextLevel = newXP - calculateTotalXP(newLevel);
+    let oldPercentage = parseFloat((oldXPProgressToNextLevel / oldXPforLevel).toFixed(2)) * 100;
+    let newPercentage = parseFloat((newXPProgressToNextLevel / newXPforLevel).toFixed(2)) * 100;
+    return Math.round((newPercentage - oldPercentage) + 100 * (newLevel - oldLevel));
+}
+
+function animateProgressBar(oldXP: number, newXP: number): void {
+    let percentageDifference = calculateTotalPercentage(oldXP, newXP);
+    let steps = percentageDifference;
+
+    console.log(percentageDifference, steps);
+
     let xpPerStep = (newXP - oldXP) / steps;
+
+    // Calculate the baseDelayFactor based on a direct relationship with percentage difference
+    // Use a maximum of 100 to prevent overly slow animations, and a minimum to prevent overly fast animations
+    
+    let baseDelayFactor = Math.max(10, 1500 / percentageDifference);
+    let baseDelay: number[] = Array(steps).fill(0).map((_, i) => baseDelayFactor - 8 * Math.sin(Math.PI * (i / steps)));
+
+    let delays: number[] = baseDelay.reduce((acc, val, i) => {
+        acc[i] = (i === 0) ? val : acc[i - 1] + val;
+        return acc;
+    }, [] as number[]);
     let currentXP = oldXP;
 
     for (let i = 0; i < steps; i++) {
-        let ratio = i / steps;
-        let delay = DEFAULT_BASE_DELAY - DEFAULT_SIN_RANGE * Math.sin(Math.PI * ratio * DEFAULT_FREQUENCY);
-
         setTimeout(() => {
             currentXP += xpPerStep;
-            updateStatusBar(currentXP);
-        }, i * delay);
+            updateStatusBar(Math.round(currentXP));
+        }, delays[i]);
     }
-    updateStatusBar(newXP);
+    setTimeout(() => updateStatusBar(newXP), delays[steps - 1]);
 }
 
 //getStatusBar helper functions
@@ -317,12 +354,8 @@ function hexToRgb(hex: string): {r: number, g: number, b: number}{
 }
 function getWebViewContent() {
     const nonce = getNonce();
-
     let htmlPath = path.resolve(__dirname, '../src/themeWebview.html');
-    console.log(htmlPath);
     let htmlContent = fs.readFileSync(htmlPath, 'utf8');
-    console.log(htmlContent);
-
     return htmlContent.replace(/\$\{nonce\}/g, nonce);
 }
 
@@ -336,6 +369,7 @@ function getNonce() {
 }
 
 function convertToSymbolString(input: string): string {
+    //converts string to string of font icons $(sm-example)
     let symbolString = "";
     for (let i = 0; i < input.length; i++) {
       let charCode = input.charCodeAt(i);
@@ -348,10 +382,4 @@ function convertToSymbolString(input: string): string {
     }
     return symbolString;
   }  
-
-//implement color getting using this hack
-//https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
-
-//use this to create webview
-//https://code.visualstudio.com/api/extension-guides/webview
 

@@ -6,5 +6,7 @@ Todo:
   [X] Add splash text for daily save etc
     [X] Create function to calculate consistent spacing
     [X] Implement monospace font
-  [ ] Implement Streaks
+  [X] Implement Streaks
+  [ ] Fix bad animations at high levels
+
   

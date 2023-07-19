@@ -22,6 +22,10 @@
       {
         "command": "codexp.addXP",
         "title": "Add XP"
+      },
+      {
+        "command": "codexp.setXP",
+        "title": "Set XP"
       }
     ],
     "productIconThemes": [
