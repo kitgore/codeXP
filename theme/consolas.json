@@ -1,10 +1,10 @@
 {
 	"fonts": [
 		{
-			"id": "segoemono",
+			"id": "consolas",
 			"src": [
 				{
-					"path": "./RobotoMono.woff",
+					"path": "./Consolas.woff",
 					"format": "woff"
 				}
 			],

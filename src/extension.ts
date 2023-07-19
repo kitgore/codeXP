@@ -4,47 +4,22 @@ import * as vscode from 'vscode';
 import { asciiToSymbolMap } from './asciiToSymbolMap';
 let statusBar: vscode.StatusBarItem;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
-const DEFAULT_FREQUENCY = .8; // Lower this number to widen the sine curve
-const DEFAULT_BASE_DELAY = 10; //delay fluctuates between baseDelay and baseDelay + sinRange
-const DEFAULT_SIN_RANGE = 3;
 
 export function activate(context: vscode.ExtensionContext) {
     setupStatusBar(context);
     cacheCurrentThemeTitle(context);
-    listenForXPAddCommand(context);
     listenForShowInfoCommand(context);
     listenForDocumentSave(context);
-    listenForXPSetCommand(context);
     listenForThemeChange(context);
-    updateStatusBar(getXP(context)); //initialize status bar
-    setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //REMOVE BEFORE PROD
+    updateStatusBar(getXP(context));
+    // listenForXPAddCommand(context);
+    // listenForXPSetCommand(context);
+    // setLastSaveTime(context, new Date((new Date()).getTime() - 1000 * 60 * 60 * 24)); //ADDS 24 HOURS TO LAST SAVE TIME
 }
 
 function listenForThemeChange(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.window.onDidChangeActiveColorTheme(() => {
         context.globalState.update('themeChangeFlag',true);
-    }));
-}
-
-function listenForXPAddCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
-    context.subscriptions.push(vscode.commands.registerCommand('codexp.addXP', async () => {
-        let xpToAdd = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to add:' });
-        if (xpToAdd !== undefined) {
-            let newXP = getXP(context) + parseInt(xpToAdd);
-            animateProgressBar(getXP(context), newXP);
-            setXP(context, newXP);
-        }
-    }));
-}
-
-function listenForXPSetCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
-    context.subscriptions.push(vscode.commands.registerCommand('codexp.setXP', async () => {
-        let xpToSet = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to set:' });
-        if (xpToSet !== undefined) {
-            let newXP = parseInt(xpToSet);
-            setXP(context, newXP);
-            updateStatusBar(newXP);
-        }
     }));
 }
 
@@ -161,7 +136,7 @@ function delay(ms: number): Promise<void> {
   }
 
 async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
-    const statusLength = 25;
+    const statusLength = 24 + Math.floor(Math.log10(calculateLevel(getXP(context))));
     let oldText = statusBar.text;
     for (let i = 0; i < text.length; i++) {
         let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
@@ -315,25 +290,18 @@ function calculateTotalPercentage(oldXP: number, newXP: number): number {
 }
 
 function animateProgressBar(oldXP: number, newXP: number): void {
-    let percentageDifference = calculateTotalPercentage(oldXP, newXP);
-    let steps = percentageDifference;
-
-    console.log(percentageDifference, steps);
-
+    let perc = Math.min(80, calculateTotalPercentage(oldXP, newXP));
+    let steps = Math.min(perc, 100);
     let xpPerStep = (newXP - oldXP) / steps;
-
     // Calculate the baseDelayFactor based on a direct relationship with percentage difference
     // Use a maximum of 100 to prevent overly slow animations, and a minimum to prevent overly fast animations
-    
-    let baseDelayFactor = Math.max(10, 1500 / percentageDifference);
+    let baseDelayFactor = (.003 * perc * perc) - (.65 * perc) + 50;
     let baseDelay: number[] = Array(steps).fill(0).map((_, i) => baseDelayFactor - 8 * Math.sin(Math.PI * (i / steps)));
-
     let delays: number[] = baseDelay.reduce((acc, val, i) => {
         acc[i] = (i === 0) ? val : acc[i - 1] + val;
         return acc;
     }, [] as number[]);
     let currentXP = oldXP;
-
     for (let i = 0; i < steps; i++) {
         setTimeout(() => {
             currentXP += xpPerStep;
@@ -383,3 +351,24 @@ function convertToSymbolString(input: string): string {
     return symbolString;
   }  
 
+// function listenForXPAddCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
+//     context.subscriptions.push(vscode.commands.registerCommand('codexp.addXP', async () => {
+//         let xpToAdd = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to add:' });
+//         if (xpToAdd !== undefined) {
+//             let newXP = getXP(context) + parseInt(xpToAdd);
+//             animateProgressBar(getXP(context), newXP);
+//             setXP(context, newXP);
+//         }
+//     }));
+// }
+
+// function listenForXPSetCommand(context: vscode.ExtensionContext) {  //REMOVE BEFORE PROD
+//     context.subscriptions.push(vscode.commands.registerCommand('codexp.setXP', async () => {
+//         let xpToSet = await vscode.window.showInputBox({ prompt: 'Enter the amount of XP to set:' });
+//         if (xpToSet !== undefined) {
+//             let newXP = parseInt(xpToSet);
+//             setXP(context, newXP);
+//             updateStatusBar(newXP);
+//         }
+//     }));
+// }
