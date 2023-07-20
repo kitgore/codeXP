@@ -5,7 +5,7 @@
 </div>
 <p align='center'>
 <br>
-Adds a leveling system to your code editor to track your time spent developing
+Adds a leveling system to your code editor to track your time spent developing 🔮
 </p>
 
 ## Features
