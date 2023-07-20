@@ -1,13 +1,11 @@
 <div align='center'>
-
 # CodeXP
-<img src="https://github.com/bengriepp/codeXP/assets/87792049/d406915a-49a8-4f5c-88f9-96bc2d8df655" width="150">
-
+<img src="https://github.com/bengriepp/codeXP/assets/87792049/a8a9d366-efc1-4290-bb81-c2c4ee9d66a3" width="150">
 </div>    
 
-
-
-This is the README for your extension "codexp". After writing up a brief description, we recommend including the following sections.
+<p align='center'>
+Adds a leveling system to your IDE to
+</p>
 
 ## Features
 
