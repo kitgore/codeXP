@@ -1,8 +1,9 @@
 <div align='center'>
 
 # CodeXP
+![logo](https://github.com/bengriepp/codeXP/assets/87792049/d406915a-49a8-4f5c-88f9-96bc2d8df655 | width=100)
 
-![](https://github.com/bengriepp/codeXP/assets/87792049/e73dab3e-b485-46d6-b470-607ed40a3bf3 =250x250)
+
 </div>    
 
 
