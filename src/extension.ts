@@ -213,7 +213,11 @@ function setStatusbarColor(context: vscode.ExtensionContext, color: { r: number,
     statusBar.color = `rgba(${color.r}, ${color.g}, ${color.b}, ${1})`;
 }
 function getCurrentStreak(context: vscode.ExtensionContext): number {
-    return context.globalState.get<number>('currentStreak') || 0;
+    let streak = context.globalState.get<number>('currentStreak');
+    if (streak === undefined) {
+        return 0;
+    }
+    return streak;
 }
 function setCurrentStreak(context: vscode.ExtensionContext, streak: number) {
     context.globalState.update('currentStreak', streak);
