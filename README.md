@@ -1,8 +1,8 @@
 <div align='center'>
   
 # CodeXP
-<img src="https://github.com/bengriepp/codeXP/assets/87792049/a8a9d366-efc1-4290-bb81-c2c4ee9d66a3" width="150">
-</div>    
+<img src="https://github.com/bengriepp/codeXP/assets/87792049/4230f4d4-e767-4fa2-b458-d977752c6e77" width="150">
+</div>
 
 ## Features
 
