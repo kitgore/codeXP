@@ -1,6 +1,7 @@
 <div align='center'>
-# CodeXP 
-<img src="https://github.com/bengriepp/codeXP/assets/87792049/a8a9d366-efc1-4290-bb81-c2c4ee9d66a3" width="150">
+  # CodeXP
+  
+  <img src="https://github.com/bengriepp/codeXP/assets/87792049/a8a9d366-efc1-4290-bb81-c2c4ee9d66a3" width="150">
 </div>    
 
 <p align='center'>
