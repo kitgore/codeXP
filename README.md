@@ -1,5 +1,7 @@
 <div align='center'>
-# CodeXP
+
+# VS Code Pets
+
 </div>    
 
 <div align='center'>
