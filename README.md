@@ -3,7 +3,8 @@
 # CodeXP
 <img src="https://github.com/bengriepp/codeXP/assets/87792049/4230f4d4-e767-4fa2-b458-d977752c6e77" width="250">
 </div>
-<p align='center'>
+<p align='center'>\
+<br>
 Adds a leveling system to your code editor to track your time spent developing
 </p>
 
