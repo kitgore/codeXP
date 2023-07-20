@@ -27,6 +27,4 @@ Adds a leveling and streak system to your code editor to track your development 
 
 If you'd like to request a feature <a href="https://github.com/bengriepp/codeXP/issues/new">click here!</a>
 
-<br>
-
 # Enjoy!👾
