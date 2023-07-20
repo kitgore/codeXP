@@ -1,4 +1,11 @@
-# codexp README
+<div align='center'>
+
+# CodeXP
+
+![logo](https://github.com/bengriepp/codeXP/assets/87792049/e73dab3e-b485-46d6-b470-607ed40a3bf3)
+</div>    
+
+
 
 This is the README for your extension "codexp". After writing up a brief description, we recommend including the following sections.
 
