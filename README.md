@@ -2,7 +2,7 @@
 
 # CodeXP
 
-![logo](https://github.com/bengriepp/codeXP/assets/87792049/e73dab3e-b485-46d6-b470-607ed40a3bf3 | width=100)
+![logo](https://github.com/bengriepp/codeXP/assets/87792049/e73dab3e-b485-46d6-b470-607ed40a3bf3 =250x250)
 </div>    
 
 
