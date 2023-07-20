@@ -1,11 +1,16 @@
 {
   "name": "codexp",
   "displayName": "codeXP",
-  "description": "theres levels to this shit",
+  "description": "Adds a leveling system to your code editor to track your time spent developing 🔮",
+  "icon": "theme/logo.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.79.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kitgore/codeXP"
+  },  
   "categories": [
     "Other"
   ],
