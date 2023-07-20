@@ -1,6 +1,6 @@
 <div align='center'>
 
-# VS Code Pets
+# CodeXP
 
 </div>    
 
