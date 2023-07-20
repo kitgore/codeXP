@@ -17,7 +17,7 @@ Adds a leveling and streak system to your code editor to track your development 
 
 **Streaks** are awarded for consecutive daily saves
 
-**Streak Multiplier** increases all xp received based on streak
+**Streak Multiplier** increases all XP received based on streak
 
 **Info** can be viewed by clicking the XP bar (XP Amount, Streak, Multiplier)
 
