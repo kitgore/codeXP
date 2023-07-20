@@ -21,6 +21,15 @@ Adds a leveling and streak system to your code editor to track your development 
 
 **Info** can be viewed by clicking the XP bar (XP Amount, Streak, Multiplier)
 
+
+
 XP duration between saves maxes at 5 minutes (300XP base)
 
-**Enjoy!👾**
+
+
+
+<a href="https://github.com/bengriepp/codeXP/issues/new">Request a Feature</a>
+
+
+
+# Enjoy!👾
