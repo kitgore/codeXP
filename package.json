@@ -3,7 +3,7 @@
   "displayName": "codeXP",
   "description": "Adds a leveling system to your code editor to track your time spent developing 🔮",
   "icon": "theme/logo.png",
-  "publisher": "pixl garden",
+  "publisher": "pixl-garden",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.79.0"
