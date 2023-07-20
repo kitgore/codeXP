@@ -6,8 +6,8 @@
 <p align='center'>
 <br>
 Adds a leveling system to your code editor to track your time spent developing 🔮
-![demo](https://github.com/bengriepp/codeXP/assets/87792049/28d02d5c-81b7-4293-bd76-538ab6ca380a)
 </p>
+![demo](https://github.com/bengriepp/codeXP/assets/87792049/28d02d5c-81b7-4293-bd76-538ab6ca380a)
 
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
