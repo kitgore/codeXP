@@ -25,6 +25,13 @@ Adds a leveling and streak system to your code editor to track your development 
 
 <br>
 
-If you'd like to request a feature <a href="https://github.com/bengriepp/codeXP/issues/new">click here!</a>
+## FAQ
+
+**Why is VSCode asking me to add an icon theme?**
+
+CodeXP implements the progress bar UI using a series of custom icons hence why an icon theme is recognized. These icons use their own identifiers and therefore will not interfere or change any existing icons. This will all be done automatically and the prompt to choose a theme can be ignored.
 
 # Enjoy!👾
+
+If you'd like to request a feature <a href="https://github.com/bengriepp/codeXP/issues/new">click here!</a>
+
