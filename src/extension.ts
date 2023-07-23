@@ -175,7 +175,6 @@ async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, d
     };
     await updateColor();
 }
-
 function getElapsedTimeInSeconds(lastSaveTime: Date | undefined): number{
     let now = new Date();
     if (lastSaveTime) {
