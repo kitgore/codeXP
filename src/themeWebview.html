@@ -7,14 +7,16 @@
 </head>
 <body>
     <script nonce="${nonce}">
-        const vscode = acquireVsCodeApi();
-        vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
-            (rv) => {
-                return {
-                    [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
+        window.onload = function() {
+            const vscode = acquireVsCodeApi();
+            vscode.postMessage(Object.values(document.getElementsByTagName('html')[0].style).map(
+                (rv) => {
+                    return {
+                        [rv]: document.getElementsByTagName('html')[0].style.getPropertyValue(rv),
+                    }
                 }
-            }
-        ));
+            ));
+        }
     </script>
 </body>
 </html>

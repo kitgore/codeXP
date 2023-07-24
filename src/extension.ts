@@ -112,7 +112,6 @@ function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r:
     //https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
     return new Promise((resolve, reject) => {
         const panel = vscode.window.createWebviewPanel('themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
-        panel.webview.html = getWebViewContent();
         panel.webview.onDidReceiveMessage(message => {
             for (let obj of message) {
                 const key = Object.keys(obj)[0];
@@ -126,6 +125,7 @@ function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r:
             reject();
             panel.dispose();
         }, undefined, context.subscriptions);
+        panel.webview.html = getWebViewContent();
     });
 }
 
