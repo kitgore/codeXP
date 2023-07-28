@@ -30,35 +30,26 @@ function listenForShowInfoCommand(context: vscode.ExtensionContext) {
         let xpForLevel = calculateXPforLevel(level + 1);
         let currentXPProgress = totalXP - calculateTotalXP(level);
         getCurrentStreak(context) <= 1 ? 
-            splashText(context, [`${currentXPProgress}/${xpForLevel} XP`], 1500) 
-            : splashText(context, [`${currentXPProgress}/${xpForLevel} XP`, `Streak: ${getCurrentStreak(context)}`, `Multiplier: ${calculateMultiplier(getCurrentStreak(context))}X`], 1500);
+            vscode.window.showInformationMessage(`Level: ${level}, ${currentXPProgress}/${xpForLevel} XP`)
+            : vscode.window.showInformationMessage(`Level: ${level}, ${currentXPProgress}/${xpForLevel} XP, Streak: ${getCurrentStreak(context)} , Multiplier: ${calculateMultiplier(getCurrentStreak(context))}X`);
     }));
 }
 
 function listenForDocumentSave(context: vscode.ExtensionContext): void {
     //either updates theme or adds XP based on flag
     context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
-        if(context.globalState.get<boolean>('themeChangeFlag') === true){
-            context.globalState.update('themeChangeFlag', false);
-            themeRefresh(context);
-        }
-        else{
+
             const lastSaveTime = getLastSaveTime(context);
             const lastSaveDate = lastSaveTime ? new Date(lastSaveTime) : undefined; // Restores to original format (date object)
             setLastSaveTime(context); // Sets the global to the current time after retrieved
             const oldXP = getXP(context);
             const newXP = Math.floor(oldXP) + Math.floor((getElapsedTimeInSeconds(lastSaveDate) + (isNewDay(lastSaveDate) ? 1000 : 0)) * calculateMultiplier(getCurrentStreak(context))); // Add elapsed XP and daily bonus
 
-            isNewDay(lastSaveDate) ? // Show splash based on streak
-                (addStreak(context, lastSaveDate),
-                getCurrentStreak(context) <= 1 ?
-                    splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`], 1500).then(() => {
-                        animateProgressBar(oldXP, newXP);})
-                    :splashText(context, [`Daily XP +${Math.ceil(1000 * calculateMultiplier(getCurrentStreak(context)))}`, `Streak: ${getCurrentStreak(context)}`], 1500).then(() => {
-                        animateProgressBar(oldXP, newXP);}))
-                : animateProgressBar(oldXP, newXP);
+            if (isNewDay(lastSaveDate)){
+                addStreak(context, lastSaveDate);
+                animateProgressBar(oldXP, newXP);
                 setXP(context, newXP);
-        }
+            }
     }));
 }
 
@@ -90,44 +81,41 @@ function cacheCurrentThemeTitle(context: vscode.ExtensionContext) {
     context.globalState.update('themeTitle', currentThemeTitle);
 }
 
-function themeRefresh(context: vscode.ExtensionContext): void {
-    cacheCurrentThemeTitle(context);
-    calculateStatusbarColor(context)
-        .then(rgb => setStatusbarColor(context, rgb))
-        .catch(error => vscode.window.showInformationMessage(error));
-}
+// function themeRefresh(context: vscode.ExtensionContext): void {
+//     cacheCurrentThemeTitle(context);
+//     calculateStatusbarColor(context)
+//         .then(rgb => setStatusbarColor(context, rgb))
+//         .catch(error => vscode.window.showInformationMessage(error));
+// }
 
 async function setupStatusBar(context: vscode.ExtensionContext) {
     statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
     statusBar.command = 'codexp.showInfo';
     statusBar.show();
     context.subscriptions.push(statusBar);
-    context.globalState.get('themeTitle') !== getCurrentThemeTitle() ?
-        themeRefresh(context)
-        : setStatusbarColor(context, getStatusbarColor(context));
 }
 
-function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | { r: 255, g: 255, b: 255 }> {
-    //hacky way to retrieve theme color by creating a webview and reading its style by @AllanOricil 
-    //https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
-    return new Promise((resolve, reject) => {
-        const panel = vscode.window.createWebviewPanel('themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
-        panel.webview.onDidReceiveMessage(message => {
-            for (let obj of message) {
-                const key = Object.keys(obj)[0];
-                if (key === '--vscode-statusBar-foreground') {
-                    const rgb = hexToRgb(obj[key]); 
-                    rgb ? resolve(rgb) : reject();
-                    panel.dispose();
-                    return;
-                }
-            }
-            reject();
-            panel.dispose();
-        }, undefined, context.subscriptions);
-        panel.webview.html = getWebViewContent();
-    });
-}
+// function calculateStatusbarColor(context: vscode.ExtensionContext): Promise<{ r: number, g: number, b: number } | { r: 255, g: 255, b: 255 }> {
+//     //hacky way to retrieve theme color by creating a webview and reading its style by @AllanOricil 
+//     //https://github.com/microsoft/vscode/issues/32813#issuecomment-798680103
+//     return new Promise((resolve, reject) => {
+//         const panel = vscode.window.createWebviewPanel('themeInfo', 'Theme Information', vscode.ViewColumn.Beside, { enableScripts: true });
+//         panel.webview.onDidReceiveMessage(message => {
+//             for (let obj of message) {
+//                 const key = Object.keys(obj)[0];
+//                 if (key === '--vscode-statusBar-foreground') {
+//                     const rgb = hexToRgb(obj[key]); 
+//                     rgb ? resolve(rgb) : reject();
+//                     panel.dispose();
+//                     return;
+//                 }
+//             }
+//             reject();
+//             panel.dispose();
+//         }, undefined, context.subscriptions);
+//         panel.webview.html = getWebViewContent();
+//     });
+// }
 
 function delay(ms: number): Promise<void> {
     return new Promise((resolve) => {
@@ -135,46 +123,46 @@ function delay(ms: number): Promise<void> {
     });
   }
 
-async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
-    const statusLength = 24 + Math.floor(Math.log10(calculateLevel(getXP(context))));
-    let oldText = statusBar.text;
-    for (let i = 0; i < text.length; i++) {
-        let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
-        await fadeStatusBar(context);
-        statusBar.text = convertToSymbolString(output);
-        await fadeStatusBar(context, true, fadeDelay);
-        await delay(duration);
-    }
-    await fadeStatusBar(context);
-    statusBar.text = oldText;
-    await fadeStatusBar(context, true, fadeDelay);
-    await delay(additionalDelay);
-}
+// async function splashText(context: vscode.ExtensionContext, text: string[], duration = 1000, fadeDelay = 300, additionalDelay = 400) {
+//     const statusLength = 24 + Math.floor(Math.log10(calculateLevel(getXP(context))));
+//     let oldText = statusBar.text;
+//     for (let i = 0; i < text.length; i++) {
+//         let output = ' '.repeat((statusLength - text[i].length)/2) + text[i] + ' '.repeat(((statusLength - text[i].length)/2) + (statusLength - text[i].length)%2);
+//         await fadeStatusBar(context);
+//         statusBar.text = convertToSymbolString(output);
+//         await fadeStatusBar(context, true, fadeDelay);
+//         await delay(duration);
+//     }
+//     await fadeStatusBar(context);
+//     statusBar.text = oldText;
+//     await fadeStatusBar(context, true, fadeDelay);
+//     await delay(additionalDelay);
+// }
 
-async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, duration = 300) {
-    let step = 0.05; // step size for changing alpha value
-    let interval = duration * step;
-    const rgb = context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
-    let alpha = fadeIn ? 0.0 : 1.0;
-    const updateColor = (): Promise<void> => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alpha = fadeIn ? alpha + step : alpha - step;
-                if (alpha < 0) { alpha = 0; }
-                if (alpha > 1) { alpha = 1; }
-                statusBar.color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
-                // If alpha is still less than 1 for fadeIn, or more than 0 for fadeOut, schedule another update
-                // otherwise, resolve the Promise
-                if ((fadeIn && alpha < 1) || (!fadeIn && alpha > 0)) {
-                    resolve(updateColor());
-                } else {
-                    resolve();
-                }
-            }, interval);
-        });
-    };
-    await updateColor();
-}
+// async function fadeStatusBar(context: vscode.ExtensionContext, fadeIn = false, duration = 300) {
+//     let step = 0.05; // step size for changing alpha value
+//     let interval = duration * step;
+//     const rgb = context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
+//     let alpha = fadeIn ? 0.0 : 1.0;
+//     const updateColor = (): Promise<void> => {
+//         return new Promise((resolve) => {
+//             setTimeout(() => {
+//                 alpha = fadeIn ? alpha + step : alpha - step;
+//                 if (alpha < 0) { alpha = 0; }
+//                 if (alpha > 1) { alpha = 1; }
+//                 statusBar.color = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+//                 // If alpha is still less than 1 for fadeIn, or more than 0 for fadeOut, schedule another update
+//                 // otherwise, resolve the Promise
+//                 if ((fadeIn && alpha < 1) || (!fadeIn && alpha > 0)) {
+//                     resolve(updateColor());
+//                 } else {
+//                     resolve();
+//                 }
+//             }, interval);
+//         });
+//     };
+//     await updateColor();
+// }
 
 function getElapsedTimeInSeconds(lastSaveTime: Date | undefined): number{
     let now = new Date();
@@ -205,13 +193,13 @@ function getLastSaveTime(context: vscode.ExtensionContext): Date | undefined {
 function setLastSaveTime(context: vscode.ExtensionContext, date: Date = new Date()){
     context.globalState.update('lastSaveTime', date);
 }
-function getStatusbarColor(context: vscode.ExtensionContext): { r: number, g: number, b: number } {
-    return context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
-}
-function setStatusbarColor(context: vscode.ExtensionContext, color: { r: number, g: number, b: number }) {
-    context.globalState.update('statusBarColor', color);
-    statusBar.color = `rgba(${color.r}, ${color.g}, ${color.b}, ${1})`;
-}
+// function getStatusbarColor(context: vscode.ExtensionContext): { r: number, g: number, b: number } {
+//     return context.globalState.get('statusBarColor') as { r: number, g: number, b: number };
+// }
+// function setStatusbarColor(context: vscode.ExtensionContext, color: { r: number, g: number, b: number }) {
+//     context.globalState.update('statusBarColor', color);
+//     statusBar.color = `rgba(${color.r}, ${color.g}, ${color.b}, ${1})`;
+// }
 function getCurrentStreak(context: vscode.ExtensionContext): number {
     let streak = context.globalState.get<number>('currentStreak');
     if (streak === undefined) {
@@ -316,29 +304,29 @@ function animateProgressBar(oldXP: number, newXP: number): void {
 }
 
 //getStatusBar helper functions
-function hexToRgb(hex: string): {r: number, g: number, b: number}{
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : {r: 255, g: 255, b: 255};
-}
-function getWebViewContent() {
-    const nonce = getNonce();
-    let htmlPath = path.resolve(__dirname, '../src/themeWebview.html');
-    let htmlContent = fs.readFileSync(htmlPath, 'utf8');
-    return htmlContent.replace(/\$\{nonce\}/g, nonce);
-}
+// function hexToRgb(hex: string): {r: number, g: number, b: number}{
+//     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+//     return result ? {
+//         r: parseInt(result[1], 16),
+//         g: parseInt(result[2], 16),
+//         b: parseInt(result[3], 16)
+//     } : {r: 255, g: 255, b: 255};
+// }
+// function getWebViewContent() {
+//     const nonce = getNonce();
+//     let htmlPath = path.resolve(__dirname, '../src/themeWebview.html');
+//     let htmlContent = fs.readFileSync(htmlPath, 'utf8');
+//     return htmlContent.replace(/\$\{nonce\}/g, nonce);
+// }
 
-function getNonce() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 32; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
+// function getNonce() {
+//     let text = '';
+//     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//     for (let i = 0; i < 32; i++) {
+//         text += possible.charAt(Math.floor(Math.random() * possible.length));
+//     }
+//     return text;
+// }
 
 function convertToSymbolString(input: string): string {
     //converts string to string of font icons $(sm-example)
