@@ -47,9 +47,9 @@ function listenForDocumentSave(context: vscode.ExtensionContext): void {
 
             if (isNewDay(lastSaveDate)){
                 addStreak(context, lastSaveDate);
-                animateProgressBar(oldXP, newXP);
-                setXP(context, newXP);
             }
+            animateProgressBar(oldXP, newXP);
+            setXP(context, newXP);
     }));
 }
 
