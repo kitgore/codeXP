@@ -6,6 +6,12 @@ let statusBar: vscode.StatusBarItem;
 const MAX_ELAPSED_TIME_IN_SECONDS = 5 * 60; // cap to 5 minutes
 
 export function activate(context: vscode.ExtensionContext) {
+    context.globalState.setKeysForSync([
+        'totalXP',
+        'lastSaveTime',
+        'currentStreak'
+    ]);
+    
     setupStatusBar(context);
     cacheCurrentThemeTitle(context);
     listenForShowInfoCommand(context);
